@@ -1,0 +1,106 @@
+@import "../styles/varaible.scss";
+
+.header {
+  background: $bg2;
+  height: $header-height;
+  color: $text2;
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+
+  &_content {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+    @include breakpoint(md) {
+      padding: 0 $spacing-lg;
+    }
+    transition: 0.3s ease padding;
+
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    & > div {
+      flex: 1;
+      white-space: nowrap;
+
+      &:nth-child(2) {
+        display: flex;
+        justify-content: center;
+        height: 100%;
+      }
+      &:last-of-type {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 700;
+  color: $text2;
+}
+
+.nav {
+  width: 100%;
+  position: fixed;
+  top: $header-height;
+  background: white;
+  text-align: start;
+  padding: $spacing-md 25px;
+
+  &_item {
+    display: none;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+  @include breakpoint(sm) {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: inherit;
+    width: auto;
+
+    &_item {
+      padding: 0 $spacing-md;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+      text-decoration: none;
+      font-size: 16px;
+      // font-family: $open-sans;
+    }
+  }
+
+  &_item_mob {
+    display: block;
+    padding: $spacing-md  $spacing-md 5px;
+    height: 100%;
+    color: $text1;
+    text-decoration: none;
+    transition: 0.3s ease color;
+    font-weight: 400;
+
+    @include breakpoint(sm) {
+      display: none;
+
+      &_item_mob {
+        display: none;
+      }
+    }
+  }
+  &_user_mob {
+    padding: $spacing-md;
+    color: $text1;
+
+    @include breakpoint(sm) {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;700&family=Ubuntu:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+$ubuntu-font: "Ubuntu", sans-serif;
+$open-sans: "Open Sans", sans-serif;
+
+$bg: rgb(255, 255, 255);
+$bg2: rgb(0, 0, 0);
+$text1: rgb(15, 15, 15);
+$text2: rgb(240, 240, 240);
+$primary: rgb(22, 210, 247);
+
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+$header-height: 72px;
+
+$sm: 30.5em;
+$md: 48em;
+$lg: 64em;
+$xl: 72em;
+
+@mixin breakpoint($point) {
+  @if $point == sm {
+    @media (min-width: $sm) {
+      @content;
+    }
+  }
+  @if $point == md {
+    @media (min-width: $md) {
+      @content;
+    }
+  }
+  @if $point == lg {
+    @media (min-width: $lg) {
+      @content;
+    }
+  }
+  @if $point == xl {
+    @media (min-width: $xl) {
+      @content;
+    }
+  }
+}
