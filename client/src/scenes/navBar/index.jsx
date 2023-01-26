@@ -1,5 +1,12 @@
 import React from "react";
 import "../../styles/navbar.scss";
+import {
+  DriveEtaOutlined,
+  AccountBalanceWalletOutlined,
+  LocalOffer,
+  SupportAgent,
+  Settings,
+} from "@mui/icons-material";
 
 const Navbar = () => {
   return (
@@ -24,13 +31,24 @@ const Navbar = () => {
             <h1 className="nav_user_mob">Hey User....</h1>
 
             <a className="nav_item_mob" href="/">
-              Ride
+              <DriveEtaOutlined fontSize="small" />
+              My trips
             </a>
             <a className="nav_item_mob" href="/">
-              Share
+              <AccountBalanceWalletOutlined fontSize="small" />
+              Wallet
             </a>
             <a className="nav_item_mob" href="/">
-              My trip
+              <LocalOffer fontSize="small" />
+              Promos
+            </a>
+            <a className="nav_item_mob" href="/">
+              <SupportAgent fontSize="small" />
+              Support message
+            </a>
+            <a className="nav_item_mob" href="/">
+              <Settings fontSize="small" />
+              Profile Settings
             </a>
           </nav>
         </div>

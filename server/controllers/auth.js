@@ -15,7 +15,6 @@ export const userAuth = async (req, res) => {
       // * Otp send to user phone NO:    *//
       const { phone, _id } = user;
       // sendOtp(phoneNo);
-
       res.status(200).json({ message: `Otp send to ${phone}`, phone, _id });
     }
   } catch (err) {
@@ -68,7 +67,7 @@ export const dAuth = async (req, res) => {
       res.status(200).json({ message: " Welcome 😉!", user, email });
     } else {
       const { _id, phone } = driver;
-      sendOtp(phone);
+      // sendOtp(phone);
       res.status(200).json({ message: `Otp send to ${phone}`, phone, _id });
     }
   } catch (err) {
@@ -79,7 +78,7 @@ export const dAuth = async (req, res) => {
 // * REGISTER DRIVER    *//
 export const dSignup = async (req, res) => {
   try {
-    const { email, password, phone, name, DLRNO } = req.body;
+    const { email, password, phone, name } = req.body;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new DriverModel({
@@ -87,7 +86,6 @@ export const dSignup = async (req, res) => {
       email,
       phone,
       password: hashedPassword,
-      DLRNO,
     });
     const savedUser = await newUser.save();
     res.status(201).json({ message: "User created", user: savedUser });
@@ -115,7 +113,6 @@ export const passwordCheck = async (req, res) => {
       delete Driver.password;
       res.status(200).json({ token, Driver });
     } else {
-
       // *User *//
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
@@ -130,7 +127,3 @@ export const passwordCheck = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
-
- 

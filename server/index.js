@@ -22,8 +22,9 @@ app.use(cors());
 //*  ROUTES   *//
 app.use("/auth", authRoutes);
 
-connectDB();
 
+//*  Databases *//
+connectDB();
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => {
