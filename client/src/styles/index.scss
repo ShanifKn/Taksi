@@ -4,6 +4,7 @@
 *::before,
 *::after {
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -13,14 +14,4 @@ body {
   height: 100vh;
 }
 
-button {
-  font-family: inherit;
-  outline: none;
-  border: none;
-  background: none;
-  letter-spacing: inherit;
-  color: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  padding: 0;
-}
+

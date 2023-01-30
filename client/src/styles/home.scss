@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+.main {
+  z-index: 10;
+  flex: 1 1 0%;
+  width: 100vw;
+  height: 100%;
+}
+
+.mapContainer {
+  flex: 1 1 0%;
+  width: 100%;
+  height: 100%;
+}
+
+.rideContainer {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  width: 400px;
+  margin-left: 1rem;
+}
+.rideRequest {
+  display: flex;
+  overflow: scroll;
+  background-color: #ffffff;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 0.5rem;
+}

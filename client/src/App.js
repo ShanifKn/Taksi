@@ -1,14 +1,13 @@
-import LoginPage from "./scenes/loginPage";
-import Navbar from "./scenes/navBar";
 import "../src/styles/index.scss";
-import Map from "./scenes/homePage/Map";
+import Home from "./components/Home";
+import Login from "./components/Login";
+// import "../src/styles/app.css";
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <Map />
-      <LoginPage />
+      {/* <Home/> */}
+      <Login />
     </div>
   );
 }
