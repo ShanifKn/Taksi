@@ -1,8 +1,6 @@
 /* eslint-disable default-case */
-
-import { useEffect } from "react";
-import { useState } from "react";
-import { createContext } from "react";
+import { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const LocationContext = createContext();
 
@@ -15,24 +13,18 @@ export const LocationProvider = ({ children }) => {
   const createLocationCoordinate = (locationName, locationType) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch("api/getLocationCoordinate", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            location: locationName,
-          }),
-        });
+        const mapboxUrl = `${process.env.REACT_APP_MAPBOX_PLACES_API_URL}/${locationName}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`;
+        const response = await fetch(mapboxUrl);
         const data = await response.json();
+        const location = data.features[0].center;
 
-        if (data.message === "success") {
+        if (location.length) {
           switch (locationType) {
             case `pickup`:
-              setPickupCoordinates(data.data);
+              setPickupCoordinates(location);
               break;
             case "dropoff":
-              setDropoffCoordinates(data.data);
+              setDropoffCoordinates(location);
               break;
           }
           resolve();
@@ -40,7 +32,7 @@ export const LocationProvider = ({ children }) => {
           reject();
         }
       } catch (error) {
-        console.error(error);
+        console.log(error.message);
         reject();
       }
     });

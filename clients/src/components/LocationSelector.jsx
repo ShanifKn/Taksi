@@ -3,9 +3,7 @@ import { LocationContext } from "../Context/locationContext";
 
 const LocationSelector = () => {
   const [inFocus, setInFocus] = useState("from");
-  const [pickup, setPickup] = useState("");
-  const [dropoff, setDropoff] = useState("");
-  const [pickupCoordinates, dropoffCoordinates] = useContext(LocationContext);
+  const { pickup, setPickup, dropoff, setDropoff } = useContext(LocationContext);
 
   return (
     <div className="pt-2">
