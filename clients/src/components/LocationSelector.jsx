@@ -3,7 +3,50 @@ import { LocationContext } from "../Context/locationContext";
 
 const LocationSelector = () => {
   const [inFocus, setInFocus] = useState("from");
-  const { pickup, setPickup, dropoff, setDropoff } = useContext(LocationContext);
+  const { pickup, setPickup, dropoff, setDropoff } =
+    useContext(LocationContext);
+  const [suggestions, setSuggestions] = useState([]);
+  const [dropSuggestions, setDropSuggestions] = useState([]);
+
+  // * Pickup Seuggestions *//
+  const handleInput = async (event) => {
+    const query = event.target.value;
+    if (!query) {
+      setSuggestions([]);
+      return;
+    }
+    const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(
+      query
+    )}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    setSuggestions(data.features.map((f) => f.place_name));
+  };
+
+  const handlePickup = (suggestion) => {
+    setPickup(suggestion);
+    setSuggestions([]);
+  };
+
+  //* DropOff Suggestions *//
+  const handleDrop = async (event) => {
+    const query = event.target.value;
+    if (!query) {
+      setDropSuggestions([]);
+      return;
+    }
+    const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(
+      query
+    )}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    setDropSuggestions(data.features.map((f) => f.place_name));
+  };
+
+  const handleDropoff = (suggestion) => {
+    setDropoff(suggestion);
+    setDropSuggestions([]);
+  };
 
   return (
     <div className="pt-2">
@@ -30,7 +73,20 @@ const LocationSelector = () => {
             value={pickup}
             onChange={(e) => setPickup(e.target.value)}
             onFocus={() => setInFocus("from")}
+            onInput={handleInput}
           />
+          {suggestions.length > 0 && (
+            <ul className="absolute z-10 bg-white border border-gray-400 w-full max-h-48 overflow-y-scroll mt-64 rounded shadow-md">
+              {suggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  onClick={() => handlePickup(suggestion)}
+                  className="cursor-pointer hover:bg-gray-200 p-2 border-b border-gray-400">
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <div className="w-0 h-[2rem] border-black border absolute z-10 left-[2.3rem] top-[2rem]" />
         <div
@@ -52,7 +108,20 @@ const LocationSelector = () => {
             value={dropoff}
             onChange={(e) => setDropoff(e.target.value)}
             onFocus={() => setInFocus("to")}
+            onInput={handleDrop}
           />
+          {dropSuggestions.length > 0 && (
+            <ul className="absolute z-10 bg-white border border-gray-400 w-full max-h-48 overflow-y-scroll mt-64 rounded shadow-md">
+              {dropSuggestions.map((dropSuggestion, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleDropoff(dropSuggestion)}
+                  className="cursor-pointer hover:bg-gray-200 p-2 border-b border-gray-400">
+                  {dropSuggestion}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

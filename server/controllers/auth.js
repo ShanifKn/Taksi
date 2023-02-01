@@ -8,9 +8,10 @@ import { generateToken } from "../middleware/authVerify.js";
 export const userAuth = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log(email);
     const user = await UserModel.findOne({ email: email });
     if (!user) {
-      res.status(200).json({ message: " Welcome 😉!", user, email });
+      res.status(200).json({ message: "new user", user, email });
     } else {
       // * Otp send to user phone NO:    *//
       const { phone, _id } = user;

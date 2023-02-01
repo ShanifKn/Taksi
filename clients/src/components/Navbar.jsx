@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
   const [currentUser, setcurrentUser] = useState(false);
+  const navigate = useNavigate();
 
   const HandleNavbar = () => {
     !navbar ? setNavbar(true) : setNavbar(false);
@@ -34,6 +35,7 @@ const Navbar = () => {
           ) : (
             <button
               type="button"
+              onClick={() => navigate("/login")}
               className="text-black bg-white transform transition duration-900 md:hover:scale-110  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0">
               Login
             </button>

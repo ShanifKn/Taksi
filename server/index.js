@@ -20,7 +20,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 //*  ROUTES   *//
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
 
 //*  Databases *//

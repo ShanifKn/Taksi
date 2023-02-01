@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { LocationContext } from "../Context/locationContext";
@@ -8,44 +8,57 @@ mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const Map = () => {
   const { pickupCoordinates, dropoffCoordinates } = useContext(LocationContext);
+  const [directions, setDirections] = useState(null);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/shanifmhd/cldezr292001v01nwc45c2pps",
-      center: [75.71389, 15.317277],
-      zoom: 6,
+      style: "mapbox://styles/shanifmhd/cldkoobkv002i01o5kg04zcoe",
+      center: [76.6413, 10.1632],
+      zoom: 7,
     });
-    if (pickupCoordinates) {
-      addToMap(map, pickupCoordinates);
-    }
 
-    if (dropoffCoordinates) {
-      addToMap(map, dropoffCoordinates);
-    }
+    map.on("load", async () => {
+      if (pickupCoordinates && dropoffCoordinates) {
+        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${pickupCoordinates[0]},${pickupCoordinates[1]};${dropoffCoordinates[0]},${dropoffCoordinates[1]}?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=${mapboxgl.accessToken}`;
+        const result = await axios.get(url);
+        setDirections(result.data.routes[0].geometry);
+        console.log(result.data);
 
-    if (pickupCoordinates && dropoffCoordinates) {
-      map.fitBounds([dropoffCoordinates, pickupCoordinates], {
-        padding: 60,
-      });
-    }
+        const routeLayer = {
+          id: "route",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: directions,
+            },
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#888",
+            "line-width": 8,
+          },
+        };
 
-    // const distance = async () => {
-    //   try {
-    //     const url = `${process.env.REACT_APP_MAPBOX_DISTANCE_URL}/${pickupCoordinates[0]},${pickupCoordinates[1]};${dropoffCoordinates[0]},${dropoffCoordinates[1]}?sources=0&destinations=1&annotations=distance&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`;
-    //     const distancel = await axios.get(url);
-    //     console.log(`distance: ${distancel}`);
-    //   } catch (err) {
-    //     // console.log(pickupCoordinates, dropoffCoordinates);
-    //     console.log(err.message);
-    //   }
-    // };
-
-    // distance();
+        map.addLayer(routeLayer);
+      }
+      if (pickupCoordinates) {
+        addToMap(map, pickupCoordinates);
+      }
+      if (dropoffCoordinates) {
+        addToMap(map, dropoffCoordinates);
+      }
+    });
   }, [pickupCoordinates, dropoffCoordinates]);
 
   const addToMap = (map, coordinates) => {
-    const marker1 = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+    const marker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
   };
 
   return <div className="flex-1 h-full w-full fixed" id="map" />;
