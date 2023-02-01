@@ -1,8 +1,10 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 const Signup = ({ email }) => {
-  const data = email.state ? email.state.data : null;
-  console.log(data);
+  // const data = email.state ? email.state.data : null;
+  const location = useLocation();
+  console.log(location);
 
   return (
     <div className="flex min-h-screen bg-white">

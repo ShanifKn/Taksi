@@ -32,11 +32,11 @@ const LoginPage = () => {
           const email = res.data.email;
           console.log(email);
           !res.data._id
-            ? navigate("/signup", { state: { email :email} })
+            ? navigate("/signup", { state: { email: email } })
             : navigate("/login");
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.message);
         });
     }
   };
