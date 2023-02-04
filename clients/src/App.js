@@ -9,6 +9,7 @@ import OtpPage from "./pages/Otp/OtpPage";
 import LoginPage from "./pages/Driver/Register/LoginPage";
 import Signup from "./pages/Driver/Register/Signup";
 import HomePage from "./pages/Driver/Home/HomePage";
+import LoginAdmin from "./pages/Admin/LoginPage/LoginPage";
 
 function App() {
   return (
@@ -25,6 +26,10 @@ function App() {
         <Route path="/driver/login" element={<LoginPage />} />
         <Route path="/driver/signup" element={<Signup />} />
         <Route path="/driver/" element={<HomePage />} />
+
+        {/* Admin Side  */}
+
+        <Route path="/admin/" element={<LoginAdmin />} />
       </Routes>
     </BrowserRouter>
   );

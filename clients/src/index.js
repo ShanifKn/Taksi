@@ -3,12 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { LocationProvider } from "./Context/locationContext";
+import { NavbarProvider } from "./Context/NavbarContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <LocationProvider>
-      <App />
+      <NavbarProvider>
+        <App />
+      </NavbarProvider>
     </LocationProvider>
   </React.StrictMode>
 );
