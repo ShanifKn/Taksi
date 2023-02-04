@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Otp = () => {
+  const location = useLocation();
+  const [isPhone, setPhone] = useState();
+
+  
+  useEffect(() => {
+    setPhone(location.state.Phone);
+  }, []);
+
   return (
     <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-12">
       <div class="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
         <div class="mx-auto flex w-full max-w-md flex-col space-y-16">
           <div class="flex flex-col items-center justify-center text-center space-y-2">
-            <div class="font-semibold text-3xl">
+            <div class="font-semibold text-3xl text-black">
               <p>Phone Verification</p>
             </div>
             <div class="flex flex-row text-sm font-medium text-gray-400">
-              <p>We have sent a code to your number PHONE</p>
+              <p>We have sent a code to your number {isPhone}</p>
             </div>
           </div>
 
@@ -54,7 +64,7 @@ const Otp = () => {
 
                 <div class="flex flex-col space-y-5">
                   <div>
-                    <button class="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-blue-700 border-none text-white text-sm shadow-sm">
+                    <button class="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-black border-none text-white text-sm shadow-sm">
                       Verify Account
                     </button>
                   </div>

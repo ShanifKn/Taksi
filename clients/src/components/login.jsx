@@ -30,10 +30,10 @@ const LoginPage = () => {
         .post("/auth/", { email: email })
         .then((res) => {
           const email = res.data.email;
-          console.log(email);
+          const Phone = res.data.phone;
           !res.data._id
             ? navigate("/signup", { state: { email: email } })
-            : navigate("/login");
+            : navigate("/otp", { state: { Phone: Phone } });
         })
         .catch((error) => {
           console.log(error.message);

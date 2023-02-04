@@ -9,7 +9,7 @@ const Confirm = () => {
       </div>
       <div className="border-t-2 cursor-pointer z-10">
         <div className="bg-black text-white m-4 py-4 text-center text-xl">
-          Comfirm ride
+          Confirm ride
         </div>
       </div>
     </div>
