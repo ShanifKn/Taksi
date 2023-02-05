@@ -31,12 +31,12 @@ const LoginPage = () => {
         .then((res) => {
           const email = res.data.email;
           const Phone = res.data.phone;
-          !res.data._id
+          !email
             ? navigate("/signup", { state: { email: email } })
-            : navigate("/otp", { state: { Phone: Phone } });
+            : navigate("/otp", { state: { Phone: Phone, email: email } });
         })
         .catch((error) => {
-          console.log(error.message);
+          console.log(error);
         });
     }
   };

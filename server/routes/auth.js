@@ -1,8 +1,7 @@
 import express from "express";
 import {
-  dAuth,
-  dSignup,
   passwordCheck,
+  resendOtp,
   userAuth,
   UserSignup,
   verify,
@@ -15,10 +14,12 @@ router.post("/usignup", UserSignup);
 
 // *  Otp  & Password *//
 router.post("/otp", verify);
+router.post("/resend", resendOtp);
 router.post("/password", passwordCheck);
 
-// *  Driver Login & Signup   *//
-router.post("/dsignin", dAuth);
-router.post("/dsignup", dSignup);
+
+
+
+
 
 export default router;

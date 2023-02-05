@@ -1,18 +1,41 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setLogout } from "../Store/Slice/Login";
+
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
-  const [currentUser, setcurrentUser] = useState(false);
+  const [currentUser, setcurrentUser] = useState(null);
+  const { name } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const HandleNavbar = () => {
     !navbar ? setNavbar(true) : setNavbar(false);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (name) {
+      setcurrentUser(name);
+    } else {
+      setcurrentUser(null);
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    dispatch(
+      setLogout({
+        user: null,
+        name: null,
+        token: null,
+      })
+    );
+    setcurrentUser(null);
+  };
 
   return (
     <nav className="bg-black px-2 sm:px-4 py-2.5 ">
@@ -28,8 +51,9 @@ const Navbar = () => {
               <AccountCircleIcon className="text-white" fontSize="large" />
               <button
                 type="button"
+                onClick={handleLogout}
                 className="text-white  transform transition duration-900 md:hover:scale-110  font-medium rounded-lg text-sm px-2 py-2.5 text-center mr-3 md:mr-0">
-                User
+                {currentUser}
               </button>
             </div>
           ) : (

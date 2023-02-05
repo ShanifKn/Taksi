@@ -2,7 +2,13 @@ import mongoose from "mongoose";
 
 const DriverSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
+      type: String,
+      required: true,
+      min: 2,
+      max: 50,
+    },
+    lastName: {
       type: String,
       required: true,
       min: 2,
@@ -23,9 +29,30 @@ const DriverSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
-    DLRNO: {
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    zip: {
       type: Number,
+    },
+
+    DLRNO: {
+      type: String,
       required: true,
+    },
+    vehicleNo: {
+      type: String,
+      required: true,
+    },
+    vehicleModel: {
+      type: String,
+      required: true,
+    },
+    PicturePath: {
+      type: String,
     },
   },
   { timestamps: true }

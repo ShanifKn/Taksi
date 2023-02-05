@@ -10,6 +10,8 @@ import LoginPage from "./pages/Driver/Register/LoginPage";
 import Signup from "./pages/Driver/Register/Signup";
 import HomePage from "./pages/Driver/Home/HomePage";
 import LoginAdmin from "./pages/Admin/LoginPage/LoginPage";
+import AdminHome from "./pages/Admin/Home/HomePage";
+import Pass from "./pages/Password/pass";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/otp" element={<OtpPage />} />
         <Route path="/siderbar" element={<SiderBar />} />
+        <Route path="/password" element={<Pass />} />
 
         {/* Driver Side */}
         <Route path="/driver/login" element={<LoginPage />} />
@@ -30,6 +33,7 @@ function App() {
         {/* Admin Side  */}
 
         <Route path="/admin/" element={<LoginAdmin />} />
+        <Route path="/admin/home" element={<AdminHome />} />
       </Routes>
     </BrowserRouter>
   );

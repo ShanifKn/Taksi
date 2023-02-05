@@ -11,7 +11,7 @@ export const sendOtp = (phone) => {
   client.verify.v2
     .services(sessionID)
     .verifications.create({ to: `+91${phone}`, channel: "sms" })
-    .then((verification) => console.log(verification.sid))
+    .then((verification) => console.log(verification.status))
     .catch((error) => console.log(error.message));
 };
 
@@ -21,7 +21,9 @@ export const verifyOtp = (phone, otp) => {
     client.verify.v2
       .services(sessionID)
       .verificationChecks.create({ to: `+91${phone}`, code: otp })
-      .then((verification_check) => resolve(verification_check))
-      .catch((error) => reject(error.message));
+      .then((verification_check) => {
+        resolve(verification_check.status);
+      })
+      .catch((error) => reject(error.status));
   });
 };

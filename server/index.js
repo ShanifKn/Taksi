@@ -22,7 +22,6 @@ app.use(cors());
 //*  ROUTES   *//
 app.use("/api/auth", authRoutes);
 
-
 //*  Databases *//
 connectDB();
 mongoose.connection.once("open", () => {

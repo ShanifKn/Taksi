@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 dark:bg-gray-900 dark:text-gray-100">
       <div className="mb-8 text-center">
@@ -54,13 +56,11 @@ const Login = () => {
           </div>
           <p className="px-6 text-sm text-center dark:text-gray-400">
             Don't have an account yet?
-            <a
-              rel="noopener noreferrer"
-              href="/"
-              className="hover:underline dark:text-violet-400">
+            <button
+              className="hover:underline dark:text-violet-400 "
+              onClick={() => navigate("/driver/signup")}>
               Sign up
-            </a>
-            .
+            </button>
           </p>
         </div>
       </form>
