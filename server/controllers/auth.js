@@ -109,18 +109,9 @@ export const dAuth = async (req, res) => {
 export const dSignup = async (req, res) => {
   try {
     const {
-      firstName,
-      lastName,
-      email,
-      password,
-      city,
-      state,
-      zip,
-      DLRNO,
-      vehicleNo,
-      vehicleModel,
+     
     } = req.body;
-
+    console.log(req.body);
     // const { email, password, phone, name } = req.body;
     // const salt = await bcrypt.genSalt();
     // const hashedPassword = await bcrypt.hash(password, salt);

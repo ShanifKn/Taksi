@@ -2,18 +2,44 @@ import React, { useState } from "react";
 
 const Dsignup = () => {
   const [preview, setPreview] = useState(null);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    city: "",
+    state: "",
+    zip: "",
+    DLRNO: "",
+    vehicleNo: "",
+    vehicleModel: "",
+    picturePath: "",
+  });
 
   const handleImg = (event) => {
     const image = event.target.files[0];
     const previewUrl = URL.createObjectURL(image);
     setPreview(previewUrl);
+    setFormData({ ...formData, picturePath: event.target.files[0] });
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
   };
 
   return (
     <section className="w-full h-full p-6  bg-gray-800 text-gray-50">
       <form
-        novalidate=""
-        action=""
+        onSubmit={handleSubmit}
         className="container flex flex-col mx-auto space-y-12 md:mt-16 md:w-3/5">
         <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm bg-gray-900">
           <div className="space-y-2 col-span-full lg:col-span-1">
@@ -41,6 +67,9 @@ const Dsignup = () => {
                 </label>
                 <input
                   type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
                   placeholder="Type here"
                   className="input input-bordered w-full max-w-xs "
                 />
@@ -53,6 +82,9 @@ const Dsignup = () => {
                 </label>
                 <input
                   type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
                   placeholder="Type here"
                   className="input input-bordered w-full max-w-xs"
                 />
@@ -65,6 +97,9 @@ const Dsignup = () => {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder="Type here"
                   className="input input-bordered w-full max-w-xs"
                 />
@@ -78,6 +113,9 @@ const Dsignup = () => {
                 <input
                   type="tel"
                   placeholder="Type here"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
                   className="input input-bordered w-full max-w-xs"
                 />
               </div>
@@ -85,11 +123,14 @@ const Dsignup = () => {
             <div className="col-span-full">
               <div className="form-control w-full ">
                 <label className="label">
-                  <span className="label-text">Address</span>
+                  <span className="label-text">Password</span>
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Type here"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   className="input input-bordered w-full "
                 />
               </div>
@@ -102,6 +143,9 @@ const Dsignup = () => {
                 <input
                   type="text"
                   placeholder="Type here"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
                   className="input input-bordered w-full max-w-xs"
                 />
               </div>
@@ -114,6 +158,9 @@ const Dsignup = () => {
                 <input
                   type="text"
                   placeholder="Type here"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
                   className="input input-bordered w-full max-w-xs"
                 />
               </div>
@@ -126,6 +173,9 @@ const Dsignup = () => {
                 <input
                   type="text"
                   placeholder="Type here"
+                  name="zip"
+                  value={formData.zip}
+                  onChange={handleInputChange}
                   className="input input-bordered w-full max-w-xs"
                 />
               </div>
@@ -160,6 +210,9 @@ const Dsignup = () => {
                 <input
                   type="text"
                   placeholder="Type here"
+                  name="DLRNO"
+                  value={formData.DLRNO}
+                  onChange={handleInputChange}
                   className="input input-bordered input-accent w-full max-w-xs"
                 />
               </div>
@@ -172,6 +225,9 @@ const Dsignup = () => {
                 <input
                   type="text"
                   placeholder="Type here"
+                  name="vehicleNo"
+                  value={formData.vehicleNo}
+                  onChange={handleInputChange}
                   className="input input-bordered input-accent w-full max-w-xs"
                 />
               </div>
@@ -184,19 +240,11 @@ const Dsignup = () => {
                 <input
                   type="text"
                   placeholder="Type here"
+                  name="vehicleModel"
+                  value={formData.vehicleModel}
+                  onChange={handleInputChange}
                   className="input input-bordered input-accent w-full max-w-xs"
                 />
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <div className="form-control w-full ">
-                <label className="label">
-                  <span className="label-text">Bio</span>
-                </label>
-                <textarea
-                  className="textarea textarea-accent"
-                  placeholder="Bio"></textarea>
               </div>
             </div>
             <div className="col-span-full">
@@ -207,7 +255,7 @@ const Dsignup = () => {
                 <div className="form-control w-full max-w-xs">
                   <input
                     type="file"
-                    multiple
+                    name="picturePath"
                     onChange={handleImg}
                     className="file-input file-input-bordered w-full max-w-xs"
                   />
@@ -218,9 +266,9 @@ const Dsignup = () => {
               </div>
             </div>
           </div>
-          <div className="md:mx-96 md:mt-5 mx-20">
+          <div className="md:mx-96 md:mt-5 mx-14">
             <button
-              className="btn btn-active px-20 md:px-auto place-items-center "
+              className="btn btn-active px-20 md:px-auto  place-items-center "
               type="submit">
               Button
             </button>
