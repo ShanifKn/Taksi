@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Driver from "../assets/Driver.jpg";
 
 const Sigin = () => {
-
   return (
     <div className="container mx-auto">
       <div className="flex justify-center px-6 my-12">

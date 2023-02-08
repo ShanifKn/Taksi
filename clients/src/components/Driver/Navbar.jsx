@@ -2,12 +2,14 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-black">
+    <div className="navbar bg-black absolute">
       <div className="navbar-start">
         <div className="dropdown"></div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl text-white" href="/">
+        <a
+          className="btn btn-ghost normal-case text-xl text-white"
+          href="/driver/login">
           Tak-si
         </a>
       </div>

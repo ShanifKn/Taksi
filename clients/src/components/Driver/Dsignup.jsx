@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { DriverSignup } from "../../api/services/DriverRequest";
 
 const Dsignup = () => {
   const [preview, setPreview] = useState(null);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -21,7 +25,7 @@ const Dsignup = () => {
     const image = event.target.files[0];
     const previewUrl = URL.createObjectURL(image);
     setPreview(previewUrl);
-    setFormData({ ...formData, picturePath: event.target.files[0] });
+    setFormData({ ...formData, picturePath: image });
   };
 
   const handleInputChange = (e) => {
@@ -31,16 +35,88 @@ const Dsignup = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    if (
+      formData.firstName === "" ||
+      formData.lastName === "" ||
+      formData.email === "" ||
+      formData.phone === "" ||
+      formData.password === "" ||
+      formData.city === "" ||
+      formData.state === "" ||
+      formData.zip === "" ||
+      formData.vehicleNo === "" ||
+      formData.vehicleModel === "" ||
+      formData.picturePath === ""
+    ) {
+      setError("All fields are required.");
+      return false;
+    }
+
+    if (
+      !/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
+    ) {
+      setError("Invalid email address.");
+      return false;
+    }
+
+    if (!/^\d{10}$/.test(formData.phone)) {
+      setError("Invalid phone number. Phone number must be 10 digits long.");
+      return false;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 8 characters long.");
+      return false;
+    }
+
+    const form = new FormData();
+    form.append("image", formData.picturePath);
+    form.append("firstName", formData.firstName);
+    form.append("lastName", formData.lastName);
+    form.append("email", formData.email);
+    form.append("password", formData.password);
+    form.append("phone", formData.phone);
+    form.append("city", formData.city);
+    form.append("state", formData.state);
+    form.append("zip", formData.zip);
+    form.append("DLRNO", formData.DLRNO);
+    form.append("vehicleNo", formData.vehicleNo);
+    form.append("vehicleModel", formData.vehicleModel);
+
+    const response = await DriverSignup(form);
+    response ? navigate("/driver/approve") : navigate("/driver/error");
   };
 
   return (
     <section className="w-full h-full p-6  bg-gray-800 text-gray-50">
       <form
         onSubmit={handleSubmit}
+        encType="multipart/form-data"
         className="container flex flex-col mx-auto space-y-12 md:mt-16 md:w-3/5">
+        {error ? (
+          <div className="alert alert-error shadow-lg">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current flex-shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{error}</span>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
         <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm bg-gray-900">
           <div className="space-y-2 col-span-full lg:col-span-1">
             <p className="font-extrabold text-lg text-red-700">
@@ -187,7 +263,7 @@ const Dsignup = () => {
             <p className="font-extrabold text-lg text-red-700 ">
               License & Registration Details
             </p>
-            <p className="text-xs  tracking-wide font-sans">
+            <p className="text-xs  tif (response === 200)racking-wide font-sans">
               Submit an application with their personal information, driving
               history, and vehicle information
             </p>
@@ -255,7 +331,7 @@ const Dsignup = () => {
                 <div className="form-control w-full max-w-xs">
                   <input
                     type="file"
-                    name="picturePath"
+                    name="image"
                     onChange={handleImg}
                     className="file-input file-input-bordered w-full max-w-xs"
                   />
@@ -266,7 +342,7 @@ const Dsignup = () => {
               </div>
             </div>
           </div>
-          <div className="md:mx-96 md:mt-5 mx-14">
+          <div className="md:mx-96 md:mt-5 ">
             <button
               className="btn btn-active px-20 md:px-auto  place-items-center "
               type="submit">

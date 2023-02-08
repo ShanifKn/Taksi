@@ -6,7 +6,7 @@ const LoginPage = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center items-center mt-16">
+      <div className="flex justify-evenly items-center h-screen">
         <Login />
       </div>
     </>
