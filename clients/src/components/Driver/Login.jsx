@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { DriverLogin } from "../../api/services/DriverRequest";
+import { setLogin } from "../../Store/Slice/DriverLogin";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
   const [user, setUser] = useState({
     email: "",
@@ -37,7 +40,13 @@ const Login = () => {
       } else if (response.status === 202) {
         setError("Incorrect Password");
       } else {
-        console.log(response);
+        dispatch(
+          setLogin({
+            user: "driver",
+            name: response.data.name,
+            token: response.data.token,
+          })
+        );
         navigate("/driver");
       }
     } catch (error) {
@@ -94,7 +103,7 @@ const Login = () => {
             <div className="flex justify-between mb-2">
               <label className="text-sm">Password</label>
               <a
-                rel="noopener noreferrer"
+                // rel="noopener noreferrer"
                 href="/"
                 className="text-xs hover:underline dark:text-gray-400">
                 Forgot password?

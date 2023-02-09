@@ -8,8 +8,7 @@ export const DriverSignup = async (Data) => {
     const data = response.data.success;
     if (data) return data;
   } catch (error) {
-    console.error(error);
-    return error;
+    return error.response.data.error;
   }
 };
 

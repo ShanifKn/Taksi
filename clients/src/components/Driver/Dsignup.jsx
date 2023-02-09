@@ -86,7 +86,13 @@ const Dsignup = () => {
     form.append("vehicleModel", formData.vehicleModel);
 
     const response = await DriverSignup(form);
-    response ? navigate("/driver/approve") : navigate("/driver/error");
+    if (response === 11000) {
+      setError("User already exist !");
+    } else if (response === true) {
+      navigate("/driver/approve");
+    } else {
+      navigate("/driver/error");
+    }
   };
 
   return (

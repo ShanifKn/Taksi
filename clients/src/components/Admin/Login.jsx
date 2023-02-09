@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AdminLogin } from "../../api/services/AdminRequest";
+import { setLogin } from "../../Store/Slice/AdminLogin";
 
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -37,11 +40,16 @@ const Login = () => {
       } else if (response.status === 202) {
         setError("Incorrect Password");
       } else {
-        console.log(response.data.token);
+        dispatch(
+          setLogin({
+            user: "Admin",
+            name: response.data.name,
+            token: response.data.token,
+          })
+        );
         navigate("/admin/home");
       }
     } catch (error) {
-      console.log(error.message);
       navigate("/driver/error");
     }
   };

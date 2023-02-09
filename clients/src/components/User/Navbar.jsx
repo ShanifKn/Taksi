@@ -26,14 +26,8 @@ const Navbar = () => {
     }
   }, []);
 
-  const handleLogout = async () => {
-    dispatch(
-      setLogout({
-        user: null,
-        name: null,
-        token: null,
-      })
-    );
+  const handleLogout = () => {
+    dispatch(setLogout());
     setcurrentUser(null);
   };
 

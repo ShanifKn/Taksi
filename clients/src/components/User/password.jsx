@@ -41,7 +41,6 @@ const Password = () => {
       setToast({ message: "Incorrect Password" });
     }
   };
-
   return (
     <div className="flex min-h-screen bg-white">
       <div className="flex flex-row w-full md:mt-32">

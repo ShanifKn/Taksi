@@ -78,9 +78,11 @@ export const passwordCheck = async (req, res) => {
     const user = await UserModel.findOne({ email: email });
 
     if (!user) return res.status(400).json({ msg: "Invalid User" });
-    const isMatch = await bcrypt.compare(password, driver.password);
+
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) return res.status(400).json({ msg: "Incorrect Password " });
+
     await UserModel.updateOne({ _id: user._id }, { $set: { Active: true } });
 
     const { _id, name } = user;
@@ -101,10 +103,10 @@ export const DriverLogin = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, driver.password);
     if (!isMatch) return res.status(202).json({ msg: "Incorrect Password " });
-    const { _id, name } = req.body;
+    const { _id, firstName, lastName } = driver;
 
     const token = generateToken(_id);
-    res.status(200).json({ token: token, name: name });
+    res.status(200).json({ token: token, name: firstName + " " + lastName });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -147,7 +149,7 @@ export const DriverSigup = async (req, res) => {
     await newUser.save();
     res.status(201).json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.code });
     console.log(err.message);
   }
 };
@@ -158,13 +160,14 @@ export const AdminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log(email, password);
+
     const admin = await AdminModel.findOne({ email: email });
 
     if (!admin) return res.status(201).json({ msg: "Invalid Email " });
 
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) return res.status(202).json({ msg: "Incorrect Password " });
-    const { _id, name } = req.body;
+    const { _id, name } = admin;
 
     const token = generateToken(_id);
     res.status(200).json({ token: token, name: name });

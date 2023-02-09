@@ -54,6 +54,10 @@ const DriverSchema = new mongoose.Schema(
     PicturePath: {
       type: String,
     },
+    Approval: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

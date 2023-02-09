@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import helmet from "helmet";
 import connectDB from "./database/db.js";
 import authRoutes from "./routes/auth.js";
+import adminRoutes from "./routes/Admin/admin.js";
 
 //*  CONFIGURATION *//
 const app = express();
@@ -21,6 +22,7 @@ app.use(cors());
 
 //*  ROUTES   *//
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 //*  Databases *//
 connectDB();

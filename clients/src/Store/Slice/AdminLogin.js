@@ -6,7 +6,7 @@ const initialState = {
   token: null,
 };
 
-export const userLoginSlice = createSlice({
+export const AdminLoginSlice = createSlice({
   name: "driverLogin",
   initialState,
   reducers: {
@@ -15,7 +15,7 @@ export const userLoginSlice = createSlice({
       state.name = action.payload.name;
       state.token = action.payload.token;
     },
-    setLogout: (state) => {
+    setLogout: (state, action) => {
       state.user = null;
       state.name = null;
       state.token = null;
@@ -23,6 +23,6 @@ export const userLoginSlice = createSlice({
   },
 });
 
-export const { setLogin, setLogout } = userLoginSlice.actions;
+export const { setLogin, setLogout } = AdminLoginSlice.actions;
 
-export default userLoginSlice.reducer;
+export default AdminLoginSlice.reducer;
