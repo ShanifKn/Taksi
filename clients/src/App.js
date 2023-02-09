@@ -16,6 +16,7 @@ import Approve from "./pages/Driver/Approve/Approve";
 import ErrorPage from "./pages/Driver/Error/Error";
 import { useSelector } from "react-redux";
 import DriverPage from "./pages/Admin/Driver/Driver";
+import Error from "./components/Admin/Error";
 
 function App() {
   const isDriver = Boolean(useSelector((state) => state.driverLogin.token));
@@ -76,6 +77,7 @@ function App() {
           path="/admin/driver"
           element={isAdmin ? <DriverPage /> : <Navigate to="/admin/" />}
         />
+        <Route path="/admin/error" element={<Error />} />
       </Routes>
     </BrowserRouter>
   );

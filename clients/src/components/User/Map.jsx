@@ -20,10 +20,15 @@ const Map = () => {
 
     map.on("load", async () => {
       if (pickupCoordinates && dropoffCoordinates) {
+
+        console.log(`pickupCoordinates`)
+
         const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${pickupCoordinates[0]},${pickupCoordinates[1]};${dropoffCoordinates[0]},${dropoffCoordinates[1]}?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=${mapboxgl.accessToken}`;
         const result = await axios.get(url);
+
+        console.log(result.data.routes)
+
         setDirections(result.data.routes[0].geometry);
-        console.log(result.data);
 
         const routeLayer = {
           id: "route",
@@ -55,7 +60,8 @@ const Map = () => {
         addToMap(map, dropoffCoordinates);
       }
     });
-  }, [pickupCoordinates, dropoffCoordinates, directions]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pickupCoordinates, dropoffCoordinates]);
 
   const addToMap = (map, coordinates) => {
     // eslint-disable-next-line no-unused-vars

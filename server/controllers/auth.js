@@ -103,10 +103,16 @@ export const DriverLogin = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, driver.password);
     if (!isMatch) return res.status(202).json({ msg: "Incorrect Password " });
-    const { _id, firstName, lastName } = driver;
+    const { _id, firstName, lastName, Approval } = driver;
 
     const token = generateToken(_id);
-    res.status(200).json({ token: token, name: firstName + " " + lastName });
+    res
+      .status(200)
+      .json({
+        token: token,
+        name: firstName + " " + lastName,
+        approval: Approval,
+      });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -159,7 +165,7 @@ export const DriverSigup = async (req, res) => {
 export const AdminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
+    console.log(req.body);
 
     const admin = await AdminModel.findOne({ email: email });
 

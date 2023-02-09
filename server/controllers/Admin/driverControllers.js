@@ -41,9 +41,12 @@ export const updateApproval = async (req, res) => {
 //*  fetch Driver List *//
 export const fetchDriverList = async (req, res) => {
   try {
-    const driver = await DriverModel.aggregate({ $match: { Approval: true } });
-    res.send(200).json({ Driver: driver });
+    const driver = await DriverModel.aggregate([
+      { $match: { Approval: true } },
+    ]);
+    res.status(200).json({ Driver: driver });
   } catch (error) {
+    console.log(error.message);
     res.sendStatus(500);
   }
 };

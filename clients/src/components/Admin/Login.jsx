@@ -29,11 +29,12 @@ const Login = () => {
       setError("Invalid email address.");
       return;
     }
-    const data = new FormData();
-    data.append("email", user.email);
-    data.append("password", user.password);
 
     try {
+      const data = new FormData();
+      data.append("email", user.email);
+      data.append("password", user.password);
+
       const response = await AdminLogin(data);
       if (response.status === 201) {
         setError("Invalid Email");

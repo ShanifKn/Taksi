@@ -6,7 +6,6 @@ import {
   driverApproval,
   driverDetails,
 } from "../../api/services/AdminRequest";
-import carImg from "../../assets/rides/uberX.png";
 
 const Approval = () => {
   const { token } = useSelector((state) => state.adminLogin);
@@ -188,7 +187,7 @@ const Approval = () => {
             </div>
 
             <div className="flex justify-center items-center">
-              <img src={carImg} alt="" />
+              <img src={driver.PicturePath} alt="" />
               <div>
                 <h3 className="font-bold text-lg mt-6 ml-6">
                   Model :

@@ -12,7 +12,6 @@ const Siderbar = () => {
   const dispatch = useDispatch();
 
   const handleLogout = (event) => {
-    event.preventDefaul();
     dispatch(setLogout());
     navigate("/admin/");
   };
@@ -42,16 +41,13 @@ const Siderbar = () => {
         aria-label="Sidebar">
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 ">
           <div className="flex justify-between cursor-pointer">
-            <a href="/" className="flex items-center pl-2.5 mb-5">
-              <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="h-6 mr-3 sm:h-7"
-                alt="Flowbite Logo"
-              />
-              <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                Tak-si
-              </span>
-            </a>
+            <div className="flex items-center pl-2.5 mb-5">
+              <Link to="/admin/home">
+                <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+                  Tak-si
+                </span>
+              </Link>
+            </div>
             <div className="md:hidden">
               <CloseIcon fontSize="large" onClick={() => handleNav()} />
             </div>

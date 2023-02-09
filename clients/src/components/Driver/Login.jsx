@@ -39,6 +39,8 @@ const Login = () => {
         setError("Invalid Email");
       } else if (response.status === 202) {
         setError("Incorrect Password");
+      } else if (!response.data.approved) {
+        navigate("/driver/approve");
       } else {
         dispatch(
           setLogin({

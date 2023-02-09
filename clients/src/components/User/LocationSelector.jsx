@@ -8,9 +8,12 @@ const LocationSelector = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [dropSuggestions, setDropSuggestions] = useState([]);
 
-  // * Pickup Seuggestions *//
+  // * Pickup Suggestions *//
   const handleInput = async (event) => {
     const query = event.target.value;
+    console.log(query);
+
+    console.log(query);
     if (!query) {
       setSuggestions([]);
       return;
@@ -47,6 +50,10 @@ const LocationSelector = () => {
     setDropoff(suggestion);
     setDropSuggestions([]);
   };
+
+
+
+  // console.log(pickup);
 
   return (
     <div className="pt-2">
