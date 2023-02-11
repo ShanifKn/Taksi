@@ -3,8 +3,7 @@ import { LocationContext } from "../../Context/locationContext";
 
 const LocationSelector = () => {
   const [inFocus, setInFocus] = useState("from");
-  const { pickup, setPickup, dropoff, setDropoff } =
-    useContext(LocationContext);
+  const { setPickup, setDropoff } = useContext(LocationContext);
   const [suggestions, setSuggestions] = useState([]);
   const [dropSuggestions, setDropSuggestions] = useState([]);
   const [pickUp, setPickUP] = useState();
@@ -27,6 +26,7 @@ const LocationSelector = () => {
 
   const handlePickup = (suggestion) => {
     setPickup(suggestion);
+    setPickUP(suggestion);
     setSuggestions([]);
   };
 
@@ -47,9 +47,9 @@ const LocationSelector = () => {
 
   const handleDropoff = (suggestion) => {
     setDropoff(suggestion);
+    setDropOFF(suggestion);
     setDropSuggestions([]);
   };
-
 
   return (
     <div className="pt-2">
@@ -73,7 +73,7 @@ const LocationSelector = () => {
           <input
             className="my-2 rounded-2 p-22 outline-none border-none bg-transparent h-full w-full"
             placeholder="Enter pickup loaction"
-            value={!pickup ? pickUp : pickup}
+            value={pickUp}
             onChange={(e) => setPickUP(e.target.value)}
             onFocus={() => setInFocus("from")}
             onInput={handleInput}
@@ -108,7 +108,7 @@ const LocationSelector = () => {
           <input
             className="my-2 rounded-2 p-22 outline-none border-none bg-transparent h-full w-full"
             placeholder="Enter pickup loaction"
-            value={!dropoff ? dropOFF : dropoff}
+            value={dropOFF}
             onChange={(e) => setDropOFF(e.target.value)}
             onFocus={() => setInFocus("to")}
             onInput={handleDrop}

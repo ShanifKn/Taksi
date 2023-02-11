@@ -17,7 +17,6 @@ export const LocationProvider = ({ children }) => {
         const response = await fetch(mapboxUrl);
         const data = await response.json();
         const location = data.features[0].center;
-
         if (location.length) {
           switch (locationType) {
             case `pickup`:
@@ -38,6 +37,11 @@ export const LocationProvider = ({ children }) => {
     });
   };
 
+
+
+
+
+  
   useEffect(() => {
     if (pickup && dropoff) {
       (async () => {

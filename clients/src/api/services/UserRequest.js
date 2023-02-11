@@ -1,13 +1,11 @@
 import axiosInstance from "../AxiosInstance";
 
-export const carList = async (token) => {
+export const List = async () => {
   try {
-    console.log(token);
-    const response = await axiosInstance.get("/admin/driver/list", {
-      headers: { Authorization: `Bearer  ${token}` },
-    });
+    const response = await axiosInstance.get("/user/carlist");
 
     const data = response.data.Driver;
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error.message);
