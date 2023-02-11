@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { LocationContext } from "../../Context/locationContext";
 import axios from "axios";
+import { getDirection } from "../../api/getLocationCoordinates";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -13,54 +14,71 @@ const Map = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/shanifmhd/cldkoobkv002i01o5kg04zcoe",
+      // style: "mapbox://styles/shanifmhd/cldkoobkv002i01o5kg04zcoe",
+      style: "mapbox://styles/shanifmhd/cldztzhx4001y01qmjjh0n0vt",
       center: [76.6413, 10.1632],
-      zoom: 9,
+      zoom: 7,
     });
 
     map.on("load", async () => {
+      // let routesPoint2;
+      // let routesPoint1;
+
       if (pickupCoordinates && dropoffCoordinates) {
+        console.log("pick", pickupCoordinates);
+        console.log("dropoff", dropoffCoordinates);
 
-        console.log(`pickupCoordinates`)
+        await getDirection(pickupCoordinates, dropoffCoordinates)
+          .then((result) => {
+            console.log(result);
+            if (result.data.routes.length > 0) {
+              const newDirections = result.data.routes[0].geometry;
+              if (newDirections !== directions) {
+                setDirections(newDirections);
+              }
+            }
 
-        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${pickupCoordinates[0]},${pickupCoordinates[1]};${dropoffCoordinates[0]},${dropoffCoordinates[1]}?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=${mapboxgl.accessToken}`;
-        const result = await axios.get(url);
+            // setDirections(result.data.routes[0].geometry);
+            const routeLayer = {
+              id: "route",
+              type: "line",
+              source: {
+                type: "geojson",
+                data: {
+                  type: "Feature",
+                  properties: {},
+                  geometry: directions,
+                },
+              },
+              layout: {
+                "line-join": "round",
+                "line-cap": "round",
+              },
+              paint: {
+                "line-color": "#888",
+                "line-width": 8,
+              },
+            };
 
-        console.log(result.data.routes)
+            map.addLayer(routeLayer);
+          })
+          .then(() => {
+            addToMap(map, pickupCoordinates);
+            addToMap(map, dropoffCoordinates);
+          });
 
-        setDirections(result.data.routes[0].geometry);
-
-        const routeLayer = {
-          id: "route",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              properties: {},
-              geometry: directions,
-            },
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#888",
-            "line-width": 8,
-          },
-        };
-
-        map.addLayer(routeLayer);
+        // if (result.data.routes.length > 0) {
+        //
+        // }
       }
       if (pickupCoordinates) {
-        addToMap(map, pickupCoordinates);
+        // addToMap(map, pickupCoordinates);
       }
+
       if (dropoffCoordinates) {
-        addToMap(map, dropoffCoordinates);
+        // addToMap(map, dropoffCoordinates);
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickupCoordinates, dropoffCoordinates]);
 
   const addToMap = (map, coordinates) => {

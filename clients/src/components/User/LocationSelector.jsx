@@ -7,13 +7,12 @@ const LocationSelector = () => {
     useContext(LocationContext);
   const [suggestions, setSuggestions] = useState([]);
   const [dropSuggestions, setDropSuggestions] = useState([]);
+  const [pickUp, setPickUP] = useState();
+  const [dropOFF, setDropOFF] = useState();
 
   // * Pickup Suggestions *//
   const handleInput = async (event) => {
     const query = event.target.value;
-    console.log(query);
-
-    console.log(query);
     if (!query) {
       setSuggestions([]);
       return;
@@ -52,9 +51,6 @@ const LocationSelector = () => {
   };
 
 
-
-  // console.log(pickup);
-
   return (
     <div className="pt-2">
       <div className="w-full font-bold text-left flex items-center text-3xl p-4 overflow-hidden  ">
@@ -77,8 +73,8 @@ const LocationSelector = () => {
           <input
             className="my-2 rounded-2 p-22 outline-none border-none bg-transparent h-full w-full"
             placeholder="Enter pickup loaction"
-            value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
+            value={!pickup ? pickUp : pickup}
+            onChange={(e) => setPickUP(e.target.value)}
             onFocus={() => setInFocus("from")}
             onInput={handleInput}
           />
@@ -112,8 +108,8 @@ const LocationSelector = () => {
           <input
             className="my-2 rounded-2 p-22 outline-none border-none bg-transparent h-full w-full"
             placeholder="Enter pickup loaction"
-            value={dropoff}
-            onChange={(e) => setDropoff(e.target.value)}
+            value={!dropoff ? dropOFF : dropoff}
+            onChange={(e) => setDropOFF(e.target.value)}
             onFocus={() => setInFocus("to")}
             onInput={handleDrop}
           />
