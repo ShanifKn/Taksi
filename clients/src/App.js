@@ -65,6 +65,7 @@ function App() {
         <Route path="/driver/error" element={<ErrorPage />} />
 
         {/* Admin Side  */}
+
         <Route
           path="/admin/"
           element={isAdmin ? <Navigate to="/admin/home" /> : <LoginAdmin />}

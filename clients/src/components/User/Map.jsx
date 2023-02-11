@@ -15,7 +15,7 @@ const Map = () => {
       container: "map",
       style: "mapbox://styles/shanifmhd/cldkoobkv002i01o5kg04zcoe",
       center: [76.6413, 10.1632],
-      zoom: 7,
+      zoom: 9,
     });
 
     map.on("load", async () => {

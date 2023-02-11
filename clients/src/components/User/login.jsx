@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import axiosInstance from "../../api/AxiosInstance";
 import { useNavigate } from "react-router-dom";
+import GoogleButton from "./GoogleButton";
 
 // * Email Validation *//
 const validateEmail = (email) => {
@@ -90,15 +90,9 @@ const LoginPage = () => {
                   <span className="px-4 text-black">Or</span>
                   <span className="w-full border border-black"></span>
                 </div>
-                <button className="flex items-center justify-center flex-none px-3 py-2 md:px-4 md:py-3 border-2 rounded-lg font-medium border-black relative">
-                  <span className="absolute left-4"></span>
-                  <span className="flex items-center text-black">
-                    <FcGoogle className="pr-2 w-10" />
-                    Sign in with Google
-                  </span>
-                </button>
               </div>
             </form>
+            <GoogleButton />
           </div>
         </div>
       </div>

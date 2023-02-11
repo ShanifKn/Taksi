@@ -10,6 +10,7 @@ import connectDB from "./database/db.js";
 import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/Admin/admin.js";
 
+
 //*  CONFIGURATION *//
 const app = express();
 const PORT = process.env.PORT || 6001;

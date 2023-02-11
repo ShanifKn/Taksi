@@ -3,6 +3,7 @@ import {
   AdminLogin,
   DriverLogin,
   DriverSigup,
+  googleAuth,
   passwordCheck,
   resendOtp,
   userAuth,
@@ -10,8 +11,6 @@ import {
   verify,
 } from "../controllers/auth.js";
 import upload from "../middleware/multer-S3.js";
-
-
 
 const router = express.Router();
 
@@ -28,10 +27,10 @@ router.post("/password", passwordCheck);
 router.post("/dsignup", upload.single("image"), DriverSigup);
 router.post("/dsignin", DriverLogin);
 
-
 // * Admin Login *//
+router.post("/asignin", AdminLogin);
 
-router.post("/asignin",AdminLogin)
-
+//* Google Auth *//
+router.post("/google", googleAuth);
 
 export default router;

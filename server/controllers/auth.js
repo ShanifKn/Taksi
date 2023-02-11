@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import DriverModel from "../models/Driver.js";
 import AdminModel from "../models/Admin.js";
 import { generateToken } from "../middleware/authVerify.js";
+import jwt_decode from "jwt-decode";
 
 // * LOGIN USER    *//
 export const userAuth = async (req, res) => {
@@ -106,13 +107,11 @@ export const DriverLogin = async (req, res) => {
     const { _id, firstName, lastName, Approval } = driver;
 
     const token = generateToken(_id);
-    res
-      .status(200)
-      .json({
-        token: token,
-        name: firstName + " " + lastName,
-        approval: Approval,
-      });
+    res.status(200).json({
+      token: token,
+      name: firstName + " " + lastName,
+      approval: Approval,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -179,5 +178,29 @@ export const AdminLogin = async (req, res) => {
     res.status(200).json({ token: token, name: name });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+// * Google Auth * //
+
+export const googleAuth = (req, res) => {
+  const { id } = req.body;
+  const decoded = jwt_decode(id);
+  googleLogin(req, res, decoded);
+};
+
+// ** user find *//
+const googleLogin = async (req, res, user) => {
+  try {
+    const findUser = await UserModel.findOne({ email: user.email });
+
+    if (!findUser) {
+      return res.status(201).json({ email: user.email });
+    } else {
+      const { phone, email, _id } = findUser;
+      return res.status(200).json({ phone, email, _id });
+    }
+  } catch (error) {
+    return res.sendStatus(500);
   }
 };
