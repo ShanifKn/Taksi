@@ -27,7 +27,7 @@ const GoogleButton = () => {
 
   return (
     <>
-      <GoogleOAuthProvider clientId="773928905471-hoshd8sofqie2ko8qro4k6j8g17q89en.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
         <button className="flex items-center  justify-center flex-none px-3 py-2 md:px-4 md:py-3 border-2 rounded-lg font-medium border-black relative">
           <span className="absolute left-4"></span>
           <span className="flex items-center text-black">
