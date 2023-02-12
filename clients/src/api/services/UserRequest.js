@@ -5,7 +5,6 @@ export const getCarList = async () => {
     const response = await axiosInstance.get("/user/carlist");
 
     const data = response.data.Driver;
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error.message);

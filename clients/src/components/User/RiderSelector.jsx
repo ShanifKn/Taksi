@@ -1,40 +1,41 @@
 import React, { useState, useContext, useEffect } from "react";
 import { getCarList } from "../../api/services/UserRequest";
-// import { List } from "../../api/services/UserRequest";
-import uberX from "../../assets/rides/uberX.png";
 import { LocationContext } from "../../Context/locationContext";
-import { getDirection } from "../../api/getLocationCoordinates";
-
-const carList = [
-  {
-    name: "FORD",
-    carImage: uberX,
-    price: 4500,
-  },
-  {
-    name: "BMW",
-    carImage: uberX,
-    price: 9500,
-  },
-  {
-    name: "Audi",
-    carImage: uberX,
-    price: 12500,
-  },
-];
+import {
+  getDirection,
+  getLocationName,
+} from "../../api/getLocationCoordinates";
 
 const RiderSelector = () => {
-  const { pickupCoordinates, dropoffCoordinates } = useContext(LocationContext);
+  const { pickupCoordinates, dropoffCoordinates, pickup, dropoff } =
+    useContext(LocationContext);
   const [carlist, setCarlist] = useState();
   const [dropOff, setDropoff] = useState();
   const [distance, setDistance] = useState();
-  const [duration, setDuration] = useState();
-  const [price, setPrice] = useState();
+  const [selectedCar, setSelectedCar] = useState(null);
+
+  const handleClick = async (car) => {
+    const response = await getLocationName(
+      pickupCoordinates[0],
+      pickupCoordinates[1]
+    );
+
+    const response2 = await getLocationName(
+      dropoffCoordinates[0],
+      dropoffCoordinates[1]
+    );
+
+    console.log(response, response2);
+
+    // console.log(response);
+    setSelectedCar(car);
+  };
 
   useEffect(() => {
     setDropoff(dropoffCoordinates);
     const carList = async () => {
       const response = await getCarList();
+
       setCarlist(response);
     };
     carList();
@@ -44,32 +45,37 @@ const RiderSelector = () => {
         pickupCoordinates,
         dropoffCoordinates
       );
-      console.log(response);
 
       const data = response.data.waypoints[0].distance;
       let distance = Math.floor(data);
       setDistance(distance);
-      let price = distance * 15;
-      setPrice(price);
+      // let price = distance * 15;
     };
 
     tripDetails();
-  }, [dropoffCoordinates, pickupCoordinates]);
+  }, [distance, dropoffCoordinates, pickupCoordinates]);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col ">
       {!dropOff ? (
-        <div className="flex items-center justify-center space-x-2">
-          <div className="w-4 h-4 rounded-full animate-pulse dark:bg-violet-400"></div>
-          <div className="w-4 h-4 rounded-full animate-pulse dark:bg-violet-400"></div>
-          <div className="w-4 h-4 rounded-full animate-pulse dark:bg-violet-400"></div>
+        <div className="flex justify-center mt-48">
+          <div className="flex items-center justify-center space-x-2 ">
+            <div className="w-4 h-4 rounded-full animate-pulse dark:bg-violet-400"></div>
+            <div className="w-4 h-4 rounded-full animate-pulse dark:bg-violet-400"></div>
+            <div className="w-4 h-4 rounded-full animate-pulse dark:bg-violet-400"></div>
+          </div>
         </div>
       ) : (
         <>
-          <div className="text-gray-500 text-center text-xs py-2 border-h"></div>
+          <div className="text-gray-500 text-center text-xs py-2 "></div>
           <div className="flex flex-col flex-1 overflow-scroll scrollbar-hide">
             {carlist.map((car, index) => (
-              <div className="flex p-3 m-2 items-center border-2 border-white">
+              <div
+                className={`flex p-3 m-2 items-center border-2 border-white hover:bg-slate-200 cursor-pointer ${
+                  selectedCar === car._id ? "bg-slate-200" : ""
+                }`}
+                onClick={() => handleClick(car._id)}
+                key={index}>
                 <img
                   src={car.PicturePath}
                   alt={car.email}
@@ -80,7 +86,6 @@ const RiderSelector = () => {
                 <div className="ml-2 flex-1">
                   <div className="font-medium">{`${car.firstName}  ${car.lastName}`}</div>
 
-
                   <div></div>
                   <div className="text-xs text-black">{car.vehicleNo}</div>
 
@@ -89,7 +94,7 @@ const RiderSelector = () => {
                   <div className="text-xs text-red-500">5 min away</div>
                 </div>
                 <div className="flex items-center">
-                  <div className="mr-[-0.8rem]">₹ {price}</div>
+                  <div className="mr-[-0.8rem]">₹ {car.Rate * distance}</div>
                 </div>
               </div>
             ))}
