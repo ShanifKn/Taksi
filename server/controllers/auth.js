@@ -132,6 +132,7 @@ export const DriverSigup = async (req, res) => {
       DLRNO,
       vehicleNo,
       vehicleModel,
+      Rate,
     } = req.body;
     const image = req.file.location;
     const salt = await bcrypt.genSalt();
@@ -149,6 +150,7 @@ export const DriverSigup = async (req, res) => {
       DLRNO,
       vehicleNo,
       vehicleModel,
+      Rate,
       PicturePath: image,
     });
     await newUser.save();

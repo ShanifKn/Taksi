@@ -58,6 +58,10 @@ const DriverSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    Rate: {
+      type: Number,
+      default: 10,
+    },
   },
   { timestamps: true }
 );

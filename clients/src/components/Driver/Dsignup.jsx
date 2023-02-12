@@ -18,6 +18,7 @@ const Dsignup = () => {
     DLRNO: "",
     vehicleNo: "",
     vehicleModel: "",
+    price: "",
     picturePath: "",
   });
 
@@ -48,6 +49,7 @@ const Dsignup = () => {
       formData.zip === "" ||
       formData.vehicleNo === "" ||
       formData.vehicleModel === "" ||
+      formData.price === "" ||
       formData.picturePath === ""
     ) {
       setError("All fields are required.");
@@ -84,6 +86,7 @@ const Dsignup = () => {
     form.append("DLRNO", formData.DLRNO);
     form.append("vehicleNo", formData.vehicleNo);
     form.append("vehicleModel", formData.vehicleModel);
+    form.append("Rate", formData.price);
 
     const response = await DriverSignup(form);
     if (response === 11000) {
@@ -328,6 +331,19 @@ const Dsignup = () => {
                   className="input input-bordered input-accent w-full max-w-xs"
                 />
               </div>
+            </div>
+            <div className="form-control w-full  max-w-xs">
+              <label className="label">
+                <span className="label-text">Charge Per Km</span>
+              </label>
+              <input
+                type="number"
+                placeholder="₹"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+                className="input input-bordered input-accent w-full max-w-xs"
+              />
             </div>
             <div className="col-span-full">
               <label for="bio" className="text-sm">

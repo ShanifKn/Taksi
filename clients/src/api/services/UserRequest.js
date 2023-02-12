@@ -1,6 +1,6 @@
 import axiosInstance from "../AxiosInstance";
 
-export const List = async () => {
+export const getCarList = async () => {
   try {
     const response = await axiosInstance.get("/user/carlist");
 
