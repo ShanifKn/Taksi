@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const AdminLoginSlice = createSlice({
-  name: "driverLogin",
+  name: "adminLogin",
   initialState,
   reducers: {
     setLogin: (state, action) => {

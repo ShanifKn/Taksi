@@ -43,7 +43,6 @@ const Map = () => {
                 "line-width": 8,
               },
             };
-
             map.addLayer(routeLayer);
           }
         );
