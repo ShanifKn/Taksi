@@ -16,7 +16,6 @@ export const DriverLogin = async (Data) => {
   try {
     const response = await AxiosInstance.post("/auth/dsignin", Data);
     const data = response;
-    console.log(data);
     if (data) return data;
   } catch (error) {
     // console.log(error.response);

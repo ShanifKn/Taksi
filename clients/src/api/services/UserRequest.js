@@ -7,8 +7,15 @@ export const getCarList = async () => {
     const data = response.data.Driver;
     return data;
   } catch (error) {
-    console.log(error.message);
-
     return error;
+  }
+};
+
+export const getDriver = async (id) => {
+  try {
+    const response = await axiosInstance.get("/user/driver-details", { params: { id: id } });
+    return response;
+  } catch (error) {
+    return error.response;
   }
 };

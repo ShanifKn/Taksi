@@ -7,8 +7,8 @@ import { NavbarProvider } from "./Context/NavbarContext";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./Store/Store";
+import { TripProvider } from "./Context/SelectTrip";
 
-console.log(store);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,7 +17,9 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <LocationProvider>
           <NavbarProvider>
-            <App />
+            <TripProvider>
+              <App />
+            </TripProvider>
           </NavbarProvider>
         </LocationProvider>
       </PersistGate>

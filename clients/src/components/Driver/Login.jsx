@@ -52,7 +52,6 @@ const Login = () => {
         navigate("/driver");
       }
     } catch (error) {
-      console.log(error.message);
       navigate("/driver/error");
     }
   };
