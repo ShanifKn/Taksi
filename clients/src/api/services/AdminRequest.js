@@ -6,7 +6,6 @@ export const AdminLogin = async (Data) => {
     const data = response;
     if (data) return data;
   } catch (error) {
-
     return error;
   }
 };
@@ -22,7 +21,6 @@ export const driverApproval = async (token) => {
     const data = response.data.Driver;
     return data;
   } catch (error) {
-
     return error.code;
   }
 };
@@ -39,7 +37,6 @@ export const driverDetails = async (id, token) => {
     const data = response.data.driver;
     return data;
   } catch (error) {
-
     return error.message;
   }
 };
@@ -58,7 +55,6 @@ export const approve = async (id, token) => {
     const data = response.status;
     if (data === 200) return true;
   } catch (error) {
-
     return error.message;
   }
 };
@@ -74,7 +70,18 @@ export const driverList = async (token) => {
     const data = response.data.Driver;
     return data;
   } catch (error) {
-
     return error;
+  }
+};
+
+//*  Car list *//
+export const carList = async (token) => {
+  try {
+    const response = await AxiosInstance.get("/admin/driver/list", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
   }
 };

@@ -17,9 +17,7 @@ const LocationSelector = () => {
       setSuggestions([]);
       return;
     }
-    const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(
-      query
-    )}.json?access_token=${
+    const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(query)}.json?access_token=${
       process.env.REACT_APP_MAPBOX_TOKEN
     }&country=IN&region=KA,TN,KL&bbox=${bbox.join(",")}`;
     const response = await fetch(url);
@@ -40,9 +38,7 @@ const LocationSelector = () => {
       setDropSuggestions([]);
       return;
     }
-    const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(
-      query
-    )}.json?access_token=${
+    const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(query)}.json?access_token=${
       process.env.REACT_APP_MAPBOX_TOKEN
     }&country=IN&region=KA,TN,KL&bbox=${bbox.join(",")}`;
     const response = await fetch(url);
@@ -56,40 +52,38 @@ const LocationSelector = () => {
     setDropSuggestions([]);
   };
 
+  const handleSetPickUP = (event) => {
+    setPickUP(event.target.value);
+  };
+
+  const handleDropOFF = (event) => {
+    setDropOFF(event.target.value);
+  };
+
   return (
     <div className="pt-2">
       <div className="w-full font-bold text-left flex items-center text-3xl p-4 overflow-hidden  ">
         {inFocus === "from" ? "Where can we pick you up ?" : "Where to ?"}
       </div>
       <div className="flex flex-col md:mb-4 relative">
-        <div
-          className={`h-10 mx-4 border-2 bg-#eeeeee flex items-center my-1 py-1 px-2 ${
-            inFocus === "from" && "border-black"
-          }`}>
+        <div className={`h-10 mx-4 border-2 bg-#eeeeee flex items-center my-1 py-1 px-2 ${inFocus === "from" && "border-black"}`}>
           <div className="mx-1">
             <svg viewBox="0 0 24 24" width="1em" height="1em">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12 14a2 2 0 100-4 2 2 0 000 4zm5-2a5 5 0 11-10 0 5 5 0 0110 0z"
-              />
+              <path fillRule="evenodd" clipRule="evenodd" d="M12 14a2 2 0 100-4 2 2 0 000 4zm5-2a5 5 0 11-10 0 5 5 0 0110 0z" />
             </svg>
           </div>
           <input
             className="my-2 rounded-2 p-22 outline-none border-none bg-transparent h-full w-full"
             placeholder="Enter pickup loaction"
             value={pickUp}
-            onChange={(e) => setPickUP(e.target.value)}
+            onChange={handleSetPickUP}
             onFocus={() => setInFocus("from")}
             onInput={handleInput}
           />
           {suggestions.length > 0 && (
             <ul className="absolute z-10 bg-white border border-gray-400 w-full max-h-48 overflow-y-scroll mt-64 rounded shadow-md">
               {suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  onClick={() => handlePickup(suggestion)}
-                  className="cursor-pointer hover:bg-gray-200 p-2 border-b border-gray-400">
+                <li key={index} onClick={() => handlePickup(suggestion)} className="cursor-pointer hover:bg-gray-200 p-2 border-b border-gray-400">
                   {suggestion}
                 </li>
               ))}
@@ -97,24 +91,17 @@ const LocationSelector = () => {
           )}
         </div>
         <div className="w-0 h-[2rem] border-black border absolute z-10 left-[2.3rem] top-[2rem]" />
-        <div
-          className={`h-10 mx-4 border-2 bg-#eeeeee flex items-center my-1 py-1 px-2 ${
-            inFocus === "to" && "border-black"
-          }`}>
+        <div className={`h-10 mx-4 border-2 bg-#eeeeee flex items-center my-1 py-1 px-2 ${inFocus === "to" && "border-black"}`}>
           <div className="mx-1">
             <svg viewBox="0 0 24 24" width="1em" height="1em">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12 14a2 2 0 100-4 2 2 0 000 4zm5-2a5 5 0 11-10 0 5 5 0 0110 0z"
-              />
+              <path fillRule="evenodd" clipRule="evenodd" d="M12 14a2 2 0 100-4 2 2 0 000 4zm5-2a5 5 0 11-10 0 5 5 0 0110 0z" />
             </svg>
           </div>
           <input
             className="my-2 rounded-2 p-22 outline-none border-none bg-transparent h-full w-full"
             placeholder="Enter pickup loaction"
             value={dropOFF}
-            onChange={(e) => setDropOFF(e.target.value)}
+            onChange={handleDropOFF}
             onFocus={() => setInFocus("to")}
             onInput={handleDrop}
           />

@@ -37,18 +37,10 @@ export const LocationProvider = ({ children }) => {
     });
   };
 
-
-
-
-
-  
   useEffect(() => {
     if (pickup && dropoff) {
       (async () => {
-        await Promise.all([
-          createLocationCoordinate(pickup, "pickup"),
-          createLocationCoordinate(dropoff, "dropoff"),
-        ]);
+        await Promise.all([createLocationCoordinate(pickup, "pickup"), createLocationCoordinate(dropoff, "dropoff")]);
       })();
     } else return;
   }, [pickup, dropoff]);

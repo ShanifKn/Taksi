@@ -10,6 +10,8 @@ export const TripProvider = ({ children }) => {
     driver: "",
     distance: "",
   });
+  const [tripDate, setTripDate] = useState();
+  const [tripTime, setTripTime] = useState();
 
   return (
     <selectTripContext.Provider
@@ -18,6 +20,10 @@ export const TripProvider = ({ children }) => {
         selectDriver,
         tripDetails,
         setTripDetails,
+        tripDate,
+        setTripDate,
+        tripTime,
+        setTripTime,
       }}>
       {children}
     </selectTripContext.Provider>

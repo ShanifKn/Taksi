@@ -27,10 +27,9 @@ export const options = {
   language: "en",
 };
 
-export const handleChange = (selectedDate) => {};
+
 
 export const handleBookTrip = async (details) => {
-  const { Driver, PickUp, DropOff } = details;
-  const response = await getDriver(Driver);
-  console.log(response);
+  const response = await getDriver(details);
+  return response;
 };

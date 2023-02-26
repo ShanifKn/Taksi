@@ -100,6 +100,7 @@ export const DriverLogin = async (req, res) => {
     const { email, password } = req.body;
     const driver = await DriverModel.findOne({ email: email });
 
+    console.log(driver)
     if (!driver) return res.status(201).json({ msg: "Invalid Email " });
 
     const isMatch = await bcrypt.compare(password, driver.password);

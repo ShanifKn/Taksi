@@ -3,9 +3,7 @@ import DriverModel from "../../models/Driver.js";
 // * fetch pending approval list *//
 export const approvalList = async (req, res) => {
   try {
-    const driver = await DriverModel.aggregate([
-      { $match: { Approval: false } },
-    ]);
+    const driver = await DriverModel.aggregate([{ $match: { Approval: false } }]);
     res.status(200).json({ Driver: driver });
   } catch (err) {
     console.log(err);
@@ -41,9 +39,7 @@ export const updateApproval = async (req, res) => {
 //*  fetch Driver List *//
 export const fetchDriverList = async (req, res) => {
   try {
-    const driver = await DriverModel.aggregate([
-      { $match: { Approval: true } },
-    ]);
+    const driver = await DriverModel.aggregate([{ $match: { Approval: true } }]);
     res.status(200).json({ Driver: driver });
   } catch (error) {
     console.log(error.message);

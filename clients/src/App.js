@@ -17,6 +17,8 @@ import ErrorPage from "./pages/Driver/Error/Error";
 import { useSelector } from "react-redux";
 import DriverPage from "./pages/Admin/Driver/Driver";
 import Error from "./components/Admin/Error";
+import CarlistPage from "./pages/Admin/Car/CarlistPage";
+import AcceptRidePage from "./pages/Driver/RideAccept/AcceptRidePage";
 
 function App() {
   const isDriver = Boolean(useSelector((state) => state.driverLogin.token));
@@ -26,58 +28,27 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route
-          path="/login"
-          element={isUser ? <Navigate to="/" /> : <Login />}
-        />
-        <Route
-          path="/signup"
-          element={isUser ? <Navigate to="/" /> : <UserSigup />}
-        />
-        <Route
-          path="/profile"
-          element={isUser ? <Navigate to="/" /> : <UserProfile />}
-        />
-        <Route
-          path="/otp"
-          element={isUser ? <Navigate to="/" /> : <OtpPage />}
-        />
+        <Route path="/login" element={isUser ? <Navigate to="/" /> : <Login />} />
+        <Route path="/signup" element={isUser ? <Navigate to="/" /> : <UserSigup />} />
+        <Route path="/profile" element={isUser ? <Navigate to="/" /> : <UserProfile />} />
+        <Route path="/otp" element={isUser ? <Navigate to="/" /> : <OtpPage />} />
         <Route path="/siderbar" element={<SiderBar />} />
-        <Route
-          path="/password"
-          element={isUser ? <Navigate to="/" /> : <Password />}
-        />
+        <Route path="/password" element={isUser ? <Navigate to="/" /> : <Password />} />
 
         {/* Driver Side */}
-        <Route
-          path="/driver/login"
-          element={isDriver ? <Navigate to="/driver/" /> : <LoginPage />}
-        />
-        <Route
-          path="/driver/signup"
-          element={isDriver ? <Navigate to="/driver/" /> : <Signup />}
-        />
-        <Route
-          path="/driver/"
-          element={isDriver ? <HomePage /> : <Navigate to="/driver/login" />}
-        />
+        <Route path="/driver/login" element={isDriver ? <Navigate to="/driver/" /> : <LoginPage />} />
+        <Route path="/driver/signup" element={isDriver ? <Navigate to="/driver/" /> : <Signup />} />
+        <Route path="/driver/" element={isDriver ? <HomePage /> : <Navigate to="/driver/login" />} />
+        <Route path="/driver/accept-ride" element={isDriver ? <AcceptRidePage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/approve" element={<Approve />} />
         <Route path="/driver/error" element={<ErrorPage />} />
 
         {/* Admin Side  */}
+        <Route path="/admin/" element={isAdmin ? <Navigate to="/admin/home" /> : <LoginAdmin />} />
+        <Route path="/admin/home" element={isAdmin ? <AdminHome /> : <Navigate to="/admin/" />} />
+        <Route path="/admin/driver" element={isAdmin ? <DriverPage /> : <Navigate to="/admin/" />} />
+        <Route path="/admin/carlist" element={isAdmin ? <CarlistPage /> : <Navigate to="/admin/" />} />
 
-        <Route
-          path="/admin/"
-          element={isAdmin ? <Navigate to="/admin/home" /> : <LoginAdmin />}
-        />
-        <Route
-          path="/admin/home"
-          element={isAdmin ? <AdminHome /> : <Navigate to="/admin/" />}
-        />
-        <Route
-          path="/admin/driver"
-          element={isAdmin ? <DriverPage /> : <Navigate to="/admin/" />}
-        />
         <Route path="/admin/error" element={<Error />} />
       </Routes>
     </BrowserRouter>

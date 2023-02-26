@@ -19,3 +19,26 @@ export const getDriver = async (id) => {
     return error.response;
   }
 };
+
+export const BookedTrip = async (token, tripDetails, tripDate, tripTime) => {
+  try {
+    const form = new FormData();
+    form.append("date", tripDate);
+    form.append("time", tripTime);
+    form.append("driverID", tripDetails.driver);
+    form.append("pickup", tripDetails.pickup);
+    form.append("dropOff", tripDetails.dropOff);
+    form.append("distance", tripDetails.distance);
+
+    console.log(token, form);
+
+    const response = await axiosInstance.post("/user/book-trip", form, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
