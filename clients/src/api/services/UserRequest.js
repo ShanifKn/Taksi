@@ -27,17 +27,15 @@ export const BookedTrip = async (token, tripDetails, tripDate, tripTime) => {
     form.append("time", tripTime);
     form.append("driverID", tripDetails.driver);
     form.append("pickup", tripDetails.pickup);
-    form.append("dropOff", tripDetails.dropOff);
+    form.append("dropoff", tripDetails.dropOff);
     form.append("distance", tripDetails.distance);
 
-    console.log(token, form);
-
-    const response = await axiosInstance.post("/user/book-trip", form, {
+    const response = await axiosInstance.post("/user/trip-book", form, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
+    return response;
   } catch (error) {
     console.log(error.message);
   }

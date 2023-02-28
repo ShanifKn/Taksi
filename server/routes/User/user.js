@@ -11,6 +11,6 @@ router.get("/carlist", carList);
 router.get("/driver-details", driverDetails);
 
 //* book ride *//
-router.post("/book-trip", verifyToken, bookTrip);
+router.post("/trip-book", verifyToken, bookTrip);
 
 export default router;

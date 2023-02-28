@@ -1,4 +1,5 @@
 import DriverModel from "../../models/Driver.js";
+import { Trip } from "./tripControllers.js";
 
 export const carList = async (req, res) => {
   try {
@@ -23,8 +24,14 @@ export const driverDetails = async (req, res) => {
 //* Booked trip *//
 export const bookTrip = async (req, res) => {
   try {
-    console.log(req.body);
+    const userId = req.user.id;
+    const { date, time, driverID, pickup, dropoff, distance } = req.body;
+
+    const addTrip = await Trip(date, time, driverID, pickup, dropoff, distance, userId);
+    if (!addTrip) return res.status(404).json({ success: false });
+
+    return res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ error: "Internal server error !" });
   }
 };

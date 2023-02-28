@@ -61,7 +61,7 @@ const RiderSelector = () => {
                 }`}
                 onClick={() => handleClick(car._id)}
                 key={index}>
-                <img src={car.PicturePath} alt={car.email} height="50" width="50" className="h-14" />
+                <img src={car.PicturePath} alt={car.lastName} height="50" width="50" className="h-14" />
                 <div className="ml-2 flex-1">
                   <div className="font-bold">{`${car.firstName}  ${car.lastName}`}</div>
                   <div className="text-xs text-black font-medium">{car.vehicleModel}</div>

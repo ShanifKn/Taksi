@@ -22,3 +22,33 @@ export const DriverLogin = async (Data) => {
     return error;
   }
 };
+
+export const getBookings = async (token) => {
+  try {
+    const response = await AxiosInstance.get("/driver/bookings", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const acceptRide = async (id, token) => {
+  try {
+    const response = await AxiosInstance.patch(
+      "/driver/accept-booking",
+      { id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

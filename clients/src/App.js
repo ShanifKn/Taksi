@@ -19,11 +19,14 @@ import DriverPage from "./pages/Admin/Driver/Driver";
 import Error from "./components/Admin/Error";
 import CarlistPage from "./pages/Admin/Car/CarlistPage";
 import AcceptRidePage from "./pages/Driver/RideAccept/AcceptRidePage";
+import ErrorServer from "./components/User/Error";
+import RidePage from "./pages/User/Ride/RidePage";
 
 function App() {
   const isDriver = Boolean(useSelector((state) => state.driverLogin.token));
   const isAdmin = Boolean(useSelector((state) => state.adminLogin.token));
   const isUser = Boolean(useSelector((state) => state.userLogin.token));
+
   return (
     <BrowserRouter>
       <Routes>
@@ -34,6 +37,8 @@ function App() {
         <Route path="/otp" element={isUser ? <Navigate to="/" /> : <OtpPage />} />
         <Route path="/siderbar" element={<SiderBar />} />
         <Route path="/password" element={isUser ? <Navigate to="/" /> : <Password />} />
+        <Route path="/ride" element={!isUser ? <Navigate to="/" /> : <RidePage />} />
+        <Route path="/error" element={<ErrorServer />} />
 
         {/* Driver Side */}
         <Route path="/driver/login" element={isDriver ? <Navigate to="/driver/" /> : <LoginPage />} />

@@ -1,5 +1,5 @@
 import express from "express";
-import { approvalList, driverDetails, fetchDriverList, updateApproval } from "../../controllers/Admin/driverControllers.js";
+import { approvalList, driverDetails, fetchDriverList, updateApproval } from "../../controllers/Admin/adminControllers.js";
 import { verifyToken } from "../../middleware/authVerify.js";
 
 const router = express.Router();

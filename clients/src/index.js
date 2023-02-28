@@ -9,21 +9,18 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./Store/Store";
 import { TripProvider } from "./Context/SelectTrip";
 
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <LocationProvider>
-          <NavbarProvider>
-            <TripProvider>
-              <App />
-            </TripProvider>
-          </NavbarProvider>
-        </LocationProvider>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <LocationProvider>
+        <NavbarProvider>
+          <TripProvider>
+            <App />
+          </TripProvider>
+        </NavbarProvider>
+      </LocationProvider>
+    </PersistGate>
+  </Provider>
 );
 reportWebVitals();
