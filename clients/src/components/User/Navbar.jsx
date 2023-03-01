@@ -34,19 +34,19 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-black px-2 sm:px-4  ">
-      <div className="container flex   flex-wrap items-center justify-between mx-auto">
+    <nav className="bg-black px-2 sm:px-4 h-16 sticky top-0  ">
+      <div className="container flex   flex-wrap items-center justify-between mx-auto ">
         <a href="/" className="flex items-center">
           <span className="self-center text-xl font-semibold whitespace-nowrap text-white">Tak-si</span>
         </a>
-        <div className="flex md:order-2">
+        <div className="flex md:order-2 items-center">
           {currentUser ? (
             <div>
               <AccountCircleIcon className="text-white" fontSize="large" />
               <button
                 type="button"
                 onClick={handleLogout}
-                className="text-white  transform transition duration-900 md:hover:scale-110  font-medium rounded-lg text-sm px-2 py-2.5 text-center mr-3 md:mr-0">
+                className="text-white md:inline hidden transform transition duration-900 md:hover:scale-110  font-medium rounded-lg text-sm px-2 py-2.5 text-center mr-3 md:mr-0">
                 {currentUser}
               </button>
             </div>

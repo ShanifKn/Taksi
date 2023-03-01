@@ -37,6 +37,21 @@ export const BookedTrip = async (token, tripDetails, tripDate, tripTime) => {
     });
     return response;
   } catch (error) {
-    console.log(error.message);
+    return error.response;
+  }
+};
+
+// * fetch complete trips *//
+export const getTrips = async (token) => {
+  try {
+    const response = await axiosInstance.get("/user/get-trips", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error.response;
   }
 };

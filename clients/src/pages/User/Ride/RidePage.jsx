@@ -4,10 +4,10 @@ import Ride from "../../../components/User/Ride";
 
 const RidePage = () => {
   return (
-    <>
+    <div className="bg-white h-screen">
       <Navbar />
       <Ride />
-    </>
+    </div>
   );
 };
 

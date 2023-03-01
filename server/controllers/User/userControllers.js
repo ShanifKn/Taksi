@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+import tripModel from "../../models/booking.js";
 import DriverModel from "../../models/Driver.js";
 import { Trip } from "./tripControllers.js";
 
@@ -32,6 +34,22 @@ export const bookTrip = async (req, res) => {
 
     return res.status(200).json({ success: true });
   } catch (error) {
+    res.status(500).json({ error: "Internal server error !" });
+  }
+};
+
+//* Fetch trips *//
+export const getTrips = async (req, res) => {
+  try {
+    const Id = req.user.id;
+    const trips = await tripModel.aggregate([
+      { $match: { user: mongoose.Types.ObjectId(Id) } },
+      { $lookup: { from: "drivers", localField: "driver", foreignField: "_id", as: "driver" } },
+      { $project: { "driver.password": 0 } },
+    ]);
+    res.status(200).json({ trip: trips });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal server error !" });
   }
 };

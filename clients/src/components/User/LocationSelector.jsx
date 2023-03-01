@@ -41,6 +41,7 @@ const LocationSelector = () => {
     const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(query)}.json?access_token=${
       process.env.REACT_APP_MAPBOX_TOKEN
     }&country=IN&region=KA,TN,KL&bbox=${bbox.join(",")}`;
+
     const response = await fetch(url);
     const data = await response.json();
     setDropSuggestions(data.features.map((f) => f.place_name));

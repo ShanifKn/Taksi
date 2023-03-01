@@ -33,7 +33,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={isUser ? <Navigate to="/" /> : <Login />} />
         <Route path="/signup" element={isUser ? <Navigate to="/" /> : <UserSigup />} />
-        <Route path="/profile" element={isUser ? <Navigate to="/" /> : <UserProfile />} />
+        <Route path="/profile" element={!isUser ? <Navigate to="/" /> : <UserProfile />} />
         <Route path="/otp" element={isUser ? <Navigate to="/" /> : <OtpPage />} />
         <Route path="/siderbar" element={<SiderBar />} />
         <Route path="/password" element={isUser ? <Navigate to="/" /> : <Password />} />
