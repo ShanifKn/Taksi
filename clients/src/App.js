@@ -21,6 +21,7 @@ import AcceptRidePage from "./pages/Driver/RideAccept/AcceptRidePage";
 import ErrorServer from "./components/User/Error";
 import RidePage from "./pages/User/Ride/RidePage";
 import WalletPage from "./pages/User/Wallet/WalletPage";
+import UpcomingtripPage from "./pages/Driver/Upcomingtrip/UpcomingtripPage";
 
 function App() {
   const isDriver = Boolean(useSelector((state) => state.driverLogin.token));
@@ -44,6 +45,7 @@ function App() {
         <Route path="/driver/signup" element={isDriver ? <Navigate to="/driver/" /> : <Signup />} />
         <Route path="/driver/" element={isDriver ? <HomePage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/accept-ride" element={isDriver ? <AcceptRidePage /> : <Navigate to="/driver/login" />} />
+        <Route path="/driver/upcoming-trips" element={isDriver ? <UpcomingtripPage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/approve" element={<Approve />} />
         <Route path="/driver/error" element={<ErrorPage />} />
         {/* Admin Side  */}

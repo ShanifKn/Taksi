@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import { NavbarContext } from "../../Context/NavbarContext";
 
 const TopNav = () => {
   const { handleNav } = useContext(NavbarContext);
-
-
-
+  const [online, setOnline] = useState(false);
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -23,65 +21,16 @@ const TopNav = () => {
               <DehazeIcon fontSize="large" />
             </button>
             <a href="/driver/" className="flex ml-2 md:mr-24">
-              <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                Tak-Si
-              </span>
+              <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Tak-Si</span>
             </a>
           </div>
+
           <div className="flex items-center">
-            <div className="flex items-center ml-3">
+            <h1 className="text-red-500 mr-4">Active</h1>
+            <div className="flex items-center md:mr-16">
               <div>
-                <button
-                  type="button"
-                  className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                  aria-expanded="false"
-                  data-dropdown-toggle="dropdown-user">
-                  <span className="sr-only">Open user menu</span>
-                  <img
-                    className="w-8 h-8 rounded-full"
-                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                    alt="userphoto"
-                  />
-                </button>
+                <input type="checkbox" className="toggle toggle-lg bg-green-500" />
               </div>
-              {/* <div
-                className={`z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"`}>
-                <ul className="py-1" role="none">
-                  <li>
-                    <a
-                      href="/s"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                      role="menuitem">
-                      Dashboard
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/s"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                      role="menuitem">
-                      Settings
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/s"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                      role="menuitem">
-                      Earnings
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                    href="/"
-                      onClick={handleLogout}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                      role="menuitem">
-                      Sign out
-                    </a>
-                  </li>
-                </ul>
-              </div> */}
             </div>
           </div>
         </div>
