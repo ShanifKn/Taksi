@@ -20,7 +20,7 @@ const DriverList = () => {
     };
     driver();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list]);
+  }, []);
 
   return (
     <div className="md:w-9/12 relative overflow-x-auto shadow-md sm:rounded-lg">

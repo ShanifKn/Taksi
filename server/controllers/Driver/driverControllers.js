@@ -23,7 +23,7 @@ export const getBookings = async (req, res) => {
 export const acceptRide = async (req, res) => {
   try {
     const { id } = req.body;
-    const code = generateVerficationCode();
+    const code = generateVerficationCode();     
     console.log(code);
     const book = await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Conform", verficationCode: code } });
     res.sendStatus(200);

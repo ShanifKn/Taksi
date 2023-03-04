@@ -10,7 +10,8 @@ const Carlist = () => {
     fetchCar(token).then((car) => {
       setCars(car.data.Driver);
     });
-  }, [token, cars]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // const blockCar = (id, token) => {};
 

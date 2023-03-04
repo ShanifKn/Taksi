@@ -20,7 +20,7 @@ const Approval = () => {
     driverList();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setDriver]);
+  }, []);
 
   const details = async (id) => {
     try {

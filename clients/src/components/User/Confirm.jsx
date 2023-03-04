@@ -54,7 +54,6 @@ const Confirm = () => {
     const response = await BookedTrip(token, tripDetails, tripDate, tripTime);
     if (response.status === 404) return setError("Please enter correct number");
     if (response.status === 200) return tripComform();
-
     if (response.status === 500) return navigate("/login");
   };
 

@@ -11,7 +11,8 @@ const Onlinelist = () => {
     fetchCar(token).then((online) => {
       setStatus(online.data.Driver);
     });
-  }, [status, token]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -32,7 +33,7 @@ const Onlinelist = () => {
               <tbody>
                 <tr className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
                   <td className="p-3">
-                    <p>97412378923</p>
+                    {/* <p>97412378923</p> */}
                   </td>
                   <td className="p-3 ">
                     <div className="flex flex-col items-center justify-center">
