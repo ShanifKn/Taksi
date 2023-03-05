@@ -26,7 +26,8 @@ const RiderSelector = () => {
   useEffect(() => {
     setDropoff(dropoffCoordinates);
     const carList = async () => {
-      const response = await getCarList();
+      const response = await getCarList(pickupCoordinates);
+      console.log(response);
       setCarlist(response);
     };
     carList();
@@ -40,9 +41,11 @@ const RiderSelector = () => {
     tripDetails();
   }, [distance, dropoffCoordinates, pickupCoordinates]);
 
+  console.log(carlist.length);
+
   return (
     <div className="h-full flex flex-col ">
-      {!dropOff && carlist ? (
+      {!dropOff || !carlist ? (
         <div className="flex justify-center md:mt-48">
           <div className="flex items-center justify-center space-x-2 ">
             <div className="w-4 h-4 rounded-full animate-pulse dark:bg-violet-400"></div>
