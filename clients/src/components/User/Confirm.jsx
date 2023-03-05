@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import RiderSelector from "../User/RiderSelector";
 import Datepicker from "tailwind-datepicker-react";
 import { selectTripContext } from "../../Context/SelectTrip";

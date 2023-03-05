@@ -4,7 +4,7 @@ import DehazeIcon from "@mui/icons-material/Dehaze";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { NavbarContext } from "../../Context/NavbarContext";
 
 const Navbar = () => {

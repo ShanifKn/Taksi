@@ -62,6 +62,10 @@ const DriverSchema = new mongoose.Schema(
       type: Number,
       default: 10,
     },
+    current_location: {
+      location: { type: String, default: null },
+      status: { type: Boolean, default: false },
+    },
   },
   { timestamps: true }
 );

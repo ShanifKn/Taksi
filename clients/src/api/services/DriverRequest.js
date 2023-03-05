@@ -52,3 +52,34 @@ export const acceptRide = async (id, token) => {
     return error.response;
   }
 };
+
+export const getlocation = async (token) => {
+  try {
+    const response = await AxiosInstance("/driver/current-location", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const set_location = async (location, status, token) => {
+  try {
+    const response = await AxiosInstance.patch(
+      "/driver/set-location",
+      { location, status },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

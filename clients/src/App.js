@@ -40,6 +40,8 @@ function App() {
         <Route path="/ride" element={!isUser ? <Navigate to="/" /> : <RidePage />} />
         <Route path="/wallet" element={!isUser ? <Navigate to="/" /> : <WalletPage />} />:
         <Route path="/error" element={<ErrorServer />} />
+       
+       
         {/* Driver Side */}
         <Route path="/driver/login" element={isDriver ? <Navigate to="/driver/" /> : <LoginPage />} />
         <Route path="/driver/signup" element={isDriver ? <Navigate to="/driver/" /> : <Signup />} />
@@ -48,6 +50,8 @@ function App() {
         <Route path="/driver/upcoming-trips" element={isDriver ? <UpcomingtripPage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/approve" element={<Approve />} />
         <Route path="/driver/error" element={<ErrorPage />} />
+        
+        
         {/* Admin Side  */}
         <Route path="/admin/" element={isAdmin ? <Navigate to="/admin/home" /> : <LoginAdmin />} />
         <Route path="/admin/home" element={isAdmin ? <AdminHome /> : <Navigate to="/admin/" />} />

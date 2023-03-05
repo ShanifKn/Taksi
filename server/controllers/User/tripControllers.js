@@ -23,7 +23,6 @@ export const Trip = async (date, time, driverId, pickup, dropoff, distance, user
     await newTrip.save();
     return true;
   } catch (error) {
-    console.log(error.message);
     return error.response;
   }
 };

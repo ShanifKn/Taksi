@@ -26,7 +26,6 @@ export const driverApproval = async (token) => {
 };
 
 //*  Driver details *//
-
 export const driverDetails = async (id, token) => {
   try {
     const response = await AxiosInstance.get(`/admin/details/${id}`, {
