@@ -10,16 +10,11 @@ export const getCarList = async (pickupCoordinates) => {
 
     for (let i = 0; i < data.length; i++) {
       const car = data[i];
-      // console.log(car);
       const availableCar = await getAvaiableCar(pickupCoordinates, car);
-
-      // console.log(availableCar;
-
       if (availableCar.length > 0) {
         availableCars.push(availableCar[0]);
       }
     }
-    console.log(`hello ${availableCars}`);
     return availableCars;
   } catch (error) {
     return error;
@@ -28,17 +23,11 @@ export const getCarList = async (pickupCoordinates) => {
 
 const getAvaiableCar = async (pickupCoordinates, driver) => {
   const carLists = [];
-  const driverLocation = driver.current_location.location;
-  const url = `${process.env.REACT_APP_MAPBOX_GEOCODING}/${encodeURIComponent(driverLocation)}.json?access_token=${
-    process.env.REACT_APP_MAPBOX_TOKEN
-  }`;
-  const response = await fetch(url);
-  const data = await response.json();
-  const driverCoordinates = data.features[0].center;
-  const findDistance = await getDirection(pickupCoordinates, driverCoordinates);
-  const distance = findDistance.data.waypoints[0].distance;
+  const driverLocation = driver.current_location.location[0];
+  const findDistance = await getDirection(pickupCoordinates, driverLocation);
+  const distance = (findDistance.data.routes[0].distance / 1000).toFixed(0);
 
-  if (distance <= 50) {
+  if (parseInt(distance) < 50) {
     carLists.push(driver);
   }
 

@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActive, setInactive, setLocation } from "../../Store/Slice/DriverLogin";
+import { getLocationName } from "../../api/getLocationCoordinates";
+import { getlocation } from "../../api/services/DriverRequest";
+import { setActive, setInactive, setLocation, setLocationData } from "../../Store/Slice/DriverLogin";
 
 const DriverLocationMobile = () => {
   const [suggestions, setSuggestions] = useState([]);
-  const { location, active } = useSelector((state) => state.driverLogin);
+  const { location, active, token } = useSelector((state) => state.driverLogin);
   const dispatch = useDispatch();
+
+  const fetchLoactionData = async () => {
+    const response = await getlocation(token);
+    if (response.status === 306) return;
+    if (response.status === 200) {
+      const lng = response.data.location[0];
+      const lat = response.data.location[1];
+      await getLocationName(lng, lat).then((locationName) => {
+        dispatch(setLocation({ location: locationName, active: true }));
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchLoactionData();
+  }, []);
 
   //* location suggestion *//
   let bbox = [72.55, 8.15, 78.55, 13.05];
@@ -20,17 +38,13 @@ const DriverLocationMobile = () => {
     }&country=IN&region=KA,TN,KL&bbox=${bbox.join(",")}`;
     const response = await fetch(url);
     const data = await response.json();
-    setSuggestions(data.features.map((f) => f.place_name));
+    setSuggestions(data.features);
   };
 
   //* location selecter *//
   const selectLocation = (suggestion) => {
-    dispatch(
-      setLocation({
-        location: suggestion,
-        active: true,
-      })
-    );
+    dispatch(setLocation({ location: suggestion.place_name, coordinates: suggestion.center, active: true }));
+    dispatch(setLocationData());
     setSuggestions([]);
   };
 
@@ -64,7 +78,7 @@ const DriverLocationMobile = () => {
                     key={index}
                     onClick={() => selectLocation(suggestion)}
                     className="cursor-pointer hover:bg-gray-200 p-2 border-b border-gray-400 text-black">
-                    {suggestion}
+                    {suggestion.place_name}
                   </li>
                 ))}
               </ul>

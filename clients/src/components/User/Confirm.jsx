@@ -16,6 +16,7 @@ const Confirm = () => {
   const token = useSelector((state) => state.userLogin.token);
   const navigate = useNavigate();
   const { tripDetails, setTripDate, tripDate, tripTime, setTripTime } = useContext(selectTripContext);
+  const { setPickup, setDropoff } = useContext(LocationContext);
   const [show, setShow] = useState(false);
   const [driver, setDriver] = useState();
   const [error, setError] = useState("");
@@ -39,7 +40,7 @@ const Confirm = () => {
 
   const tripComform = () => {
     setBooked(!booked);
-    navigate("/");
+    navigate("/ride");
   };
 
   const bookTrip = async () => {

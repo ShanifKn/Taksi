@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { acceptRide, getBookings } from "../../api/services/DriverRequest";
+import { acceptRide, declineRide, getBookings } from "../../api/services/DriverRequest";
 import { useSelector } from "react-redux";
 import AcceptProfile from "./AcceptProfile";
 
@@ -22,6 +22,18 @@ const AcceptRide = () => {
     const response = await acceptRide(id, token);
     if (response.status === 200) {
       setMessage("Trip Accepted");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+
+      fetchBookings();
+    }
+  };
+
+  const handleDecline = async (id) => {
+    const response = await declineRide(id, token);
+    if (response.status === 200) {
+      setMessage("Trip Declined");
       setTimeout(() => {
         setMessage("");
       }, 2000);
@@ -83,7 +95,7 @@ const AcceptRide = () => {
                 <div className="py-8  border-b-2 border-gray-500 flex flex-wrap md:flex-nowrap">
                   <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
                     <span className="font-extrabold  text-lg title-font text-red-600">Booking Date</span>
-                    <span className="mt-1 text-white text-sm">12 Jun 2019</span>
+                    <span className="mt-1 text-white text-sm">{trip.date}</span>
                   </div>
                   <div className="md:flex-grow ">
                     <h2 className="text-xl font-medium text-gray-400 title-font mb-2">
@@ -110,7 +122,9 @@ const AcceptRide = () => {
                       <button className="btn bg-green-400 text-black" onClick={() => handleSubmit(trip._id)}>
                         Accept
                       </button>
-                      <button className="btn bg-gray-500 text-black">Decline</button>
+                      <button className="btn bg-gray-500 text-black" onClick={() => handleDecline(trip._id)}>
+                        Decline
+                      </button>
                     </div>
                   </div>
                   <AcceptProfile name={trip.user[0].name} email={trip.user[0].email} phone={trip.user[0].phone} />

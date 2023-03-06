@@ -25,7 +25,17 @@ export const acceptRide = async (req, res) => {
   try {
     const { id } = req.body;
     const code = generateVerficationCode();
-    const book = await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Conform", verficationCode: code } });
+    await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Conform", verficationCode: code } });
+    const driver = await tripModel.findOne({ _id: id });
+    const driverId = driver.driver.valueOf();
+    const bookingDate = driver.date;
+
+    //* updating all there booking on current dirver *//
+    await tripModel.updateMany(
+      { driver: mongoose.Types.ObjectId(driverId), date: bookingDate, bookingStatus: "Pending" },
+      { $set: { bookingStatus: "Driver_Canceled", driver: null } }
+    );
+
     res.sendStatus(200);
   } catch (error) {}
 };
@@ -37,8 +47,10 @@ export const getCurrentLocation = async (req, res) => {
       { $match: { _id: mongoose.Types.ObjectId(id) } },
       { $project: { _id: 0, current_location: 1 } },
     ]);
-    const location = currentLocation[0].current_location.location;
+    const location = currentLocation[0].current_location.location[0];
     const status = currentLocation[0].current_location.status;
+
+    if (!location) return res.status(306).json({ msg: "No current location" });
 
     res.status(200).json({ location, status });
   } catch (error) {
@@ -49,6 +61,8 @@ export const getCurrentLocation = async (req, res) => {
 export const setCurrentLocation = async (req, res) => {
   try {
     const { location, status } = req.body;
+    console.log(location, status);
+
     const { id } = req.user;
     const setLocation = await DriverModel.updateOne(
       { _id: id },
@@ -56,7 +70,46 @@ export const setCurrentLocation = async (req, res) => {
         $set: { current_location: { location: location, status: status } },
       }
     );
+
+    console.log(setLocation);
     res.sendStatus(200);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+export const getPendingBookingList = async (req, res) => {
+  try {
+    const bookings = await tripModel.aggregate([
+      { $match: { bookingStatus: "Driver_Canceled" } },
+      { $lookup: { from: "users", localField: "user", foreignField: "_id", as: "user" } },
+      { $unwind: "$user" },
+      { $project: { "user.password": 0, "user.createdAt": 0, "user.updatedAt": 0 } },
+    ]);
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+export const declineRide = async (req, res) => {
+  try {
+    const { id } = req.body;
+    await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Driver_Canceled", driver: null } });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+export const acceptBooking = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const { driverId } = req.user;
+    const prevBookings = await tripModel.findOne({ _id: id });
+
+    console.log(prevBookings);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error!" });
   }

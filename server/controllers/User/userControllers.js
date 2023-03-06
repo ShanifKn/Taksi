@@ -5,7 +5,7 @@ import { Trip } from "./tripControllers.js";
 
 export const carList = async (req, res) => {
   try {
-    const driver = await DriverModel.aggregate([{ $match: { Approval: true } }]);
+    const driver = await DriverModel.aggregate([{ $match: { Approval: true, "current_location.status": true } }]);
     res.status(200).json({ Driver: driver });
   } catch (error) {
     res.status(500).json({ error: "Internal server error !" });

@@ -22,6 +22,7 @@ import ErrorServer from "./components/User/Error";
 import RidePage from "./pages/User/Ride/RidePage";
 import WalletPage from "./pages/User/Wallet/WalletPage";
 import UpcomingtripPage from "./pages/Driver/Upcomingtrip/UpcomingtripPage";
+import PendingBookingPage from "./pages/Driver/PendingBookings/PendingBookingPage";
 
 function App() {
   const isDriver = Boolean(useSelector((state) => state.driverLogin.token));
@@ -40,18 +41,15 @@ function App() {
         <Route path="/ride" element={!isUser ? <Navigate to="/" /> : <RidePage />} />
         <Route path="/wallet" element={!isUser ? <Navigate to="/" /> : <WalletPage />} />:
         <Route path="/error" element={<ErrorServer />} />
-       
-       
         {/* Driver Side */}
         <Route path="/driver/login" element={isDriver ? <Navigate to="/driver/" /> : <LoginPage />} />
         <Route path="/driver/signup" element={isDriver ? <Navigate to="/driver/" /> : <Signup />} />
         <Route path="/driver/" element={isDriver ? <HomePage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/accept-ride" element={isDriver ? <AcceptRidePage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/upcoming-trips" element={isDriver ? <UpcomingtripPage /> : <Navigate to="/driver/login" />} />
+        <Route path="/driver/pending-bookings" element={isDriver ? <PendingBookingPage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/approve" element={<Approve />} />
         <Route path="/driver/error" element={<ErrorPage />} />
-        
-        
         {/* Admin Side  */}
         <Route path="/admin/" element={isAdmin ? <Navigate to="/admin/home" /> : <LoginAdmin />} />
         <Route path="/admin/home" element={isAdmin ? <AdminHome /> : <Navigate to="/admin/" />} />

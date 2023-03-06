@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getlocation, set_location } from "../../api/services/DriverRequest";
+import { set_location } from "../../api/services/DriverRequest";
 
 const initialState = {
   user: null,
   name: null,
   token: null,
   location: null,
+  coordinates: [],
   active: false,
 };
 
@@ -23,10 +24,12 @@ export const DriverLoginSlice = createSlice({
       state.name = null;
       state.token = null;
       state.location = null;
+      state.coordinates = [];
       state.active = false;
     },
     setLocation: (state, action) => {
       state.location = action.payload.location;
+      state.coordinates = [action.payload.coordinates];
       state.active = action.payload.active;
     },
     setActive: (state, action) => {
@@ -34,21 +37,15 @@ export const DriverLoginSlice = createSlice({
     },
     setInactive: (state, action) => {
       state.location = null;
+      state.coordinates = [];
       state.active = false;
     },
-    fetchLoactionData: (state, action) => {
-      const response = getlocation(state.token);
-      if (response.status === 200) {
-        state.location = response.location;
-        state.active = response.active;
-      }
-    },
     setLocationData: (state, action) => {
-      set_location(state.location, state.active, state.token);
+      set_location(state.coordinates, state.active, state.token);
     },
   },
 });
 
-export const { setLogin, setLogout, setLocation, setActive, setInactive, fetchLoactionData, setLocationData } = DriverLoginSlice.actions;
+export const { setLogin, setLogout, setLocation, setActive, setInactive, setLocationData } = DriverLoginSlice.actions;
 
 export default DriverLoginSlice.reducer;

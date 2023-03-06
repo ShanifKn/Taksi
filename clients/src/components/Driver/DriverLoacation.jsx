@@ -1,16 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLocation, setActive, setInactive, setLocationData } from "../../Store/Slice/DriverLogin";
+import { getLocationName } from "../../api/getLocationCoordinates";
+import { getlocation } from "../../api/services/DriverRequest";
+import { setLocation, setActive, setInactive, setLocationData, fetchLoactionData } from "../../Store/Slice/DriverLogin";
 
 const DriverLoacation = () => {
   const [suggestions, setSuggestions] = useState([]);
-  const { location, active } = useSelector((state) => state.driverLogin);
+  const { location, active, token } = useSelector((state) => state.driverLogin);
   const dispatch = useDispatch();
+
+  const fetchLoactionData = async () => {
+    const response = await getlocation(token);
+    if (response.status === 306) return;
+    if (response.status === 200) {
+      const lng = response.data.location[0];
+      const lat = response.data.location[1];
+      await getLocationName(lng, lat).then((locationName) => {
+        dispatch(setLocation({ location: locationName, active: true }));
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchLoactionData();
+  }, []);
 
   //* location suggestion *//
   let bbox = [72.55, 8.15, 78.55, 13.05];
   const handleInput = async (event) => {
     const query = event.target.value;
+
     if (!query) {
       setSuggestions([]);
       return;
@@ -20,12 +39,12 @@ const DriverLoacation = () => {
     }&country=IN&region=KA,TN,KL&bbox=${bbox.join(",")}`;
     const response = await fetch(url);
     const data = await response.json();
-    setSuggestions(data.features.map((f) => f.place_name));
+    setSuggestions(data.features);
   };
 
   //* location selecter *//
   const selectLocation = (suggestion) => {
-    dispatch(setLocation({ location: suggestion, active: true }));
+    dispatch(setLocation({ location: suggestion.place_name, coordinates: suggestion.center, active: true }));
     dispatch(setLocationData());
     setSuggestions([]);
   };
@@ -33,7 +52,11 @@ const DriverLoacation = () => {
   //* online *//
   const selectOffline = (event) => {
     const status = event.target.checked;
-    if (!status) return dispatch(setInactive());
+    if (!status) {
+      dispatch(setInactive());
+      dispatch(setLocationData());
+      return;
+    }
     return dispatch(setActive());
   };
 
@@ -56,7 +79,7 @@ const DriverLoacation = () => {
                     key={index}
                     onClick={() => selectLocation(suggestion)}
                     className="cursor-pointer hover:bg-gray-200 p-2 border-b border-gray-400 text-black">
-                    {suggestion}
+                    {suggestion.place_name}
                   </li>
                 ))}
               </ul>

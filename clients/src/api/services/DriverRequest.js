@@ -36,6 +36,7 @@ export const getBookings = async (token) => {
   }
 };
 
+// * accept ride *//
 export const acceptRide = async (id, token) => {
   try {
     const response = await AxiosInstance.patch(
@@ -47,6 +48,16 @@ export const acceptRide = async (id, token) => {
         },
       }
     );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+// * decline ride *//
+export const declineRide = async (id, token) => {
+  try {
+    const response = await AxiosInstance.patch("/driver/decline-booking", { id }, { headers: { Authorization: `Bearer ${token}` } });
     return response;
   } catch (error) {
     return error.response;
@@ -68,6 +79,7 @@ export const getlocation = async (token) => {
 
 export const set_location = async (location, status, token) => {
   try {
+    console.log(location);
     const response = await AxiosInstance.patch(
       "/driver/set-location",
       { location, status },
@@ -78,6 +90,28 @@ export const set_location = async (location, status, token) => {
       }
     );
 
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+//* fetch pending booking list *//
+export const getPendingBookings = async (token) => {
+  try {
+    const response = await AxiosInstance.get("/driver/pending-bookinglist", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+// * accept pending bookings *//
+export const acceptPendingBookings = async (id, token) => {
+  try {
+    const response = await AxiosInstance.patch("/driver/accept-ride", { id }, { headers: { Authorization: `Bearer ${token}` } });
     return response;
   } catch (error) {
     return error.response;
