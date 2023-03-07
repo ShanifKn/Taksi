@@ -1,8 +1,9 @@
 import express from "express";
 import {
-      acceptBooking,
+  acceptBooking,
   acceptRide,
   declineRide,
+  getBookingHistory,
   getBookings,
   getCurrentLocation,
   getPendingBookingList,
@@ -22,6 +23,9 @@ router.get("/pending-bookinglist", verifyToken, getPendingBookingList);
 
 //* fetch current location *//
 router.get("/current-location", verifyToken, getCurrentLocation);
+
+//* fetch booking history *//
+router.get("/booking-history", verifyToken, getBookingHistory);
 
 // *--------patch request------*//
 

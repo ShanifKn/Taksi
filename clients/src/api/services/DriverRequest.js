@@ -117,3 +117,13 @@ export const acceptPendingBookings = async (id, token) => {
     return error.response;
   }
 };
+
+// * fetch booking history *//
+export const fetchBookingHistory = async (token) => {
+  try {
+    const response = await AxiosInstance.get("/driver/booking-history", { headers: { Authorization: `Bearer ${token}` } });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

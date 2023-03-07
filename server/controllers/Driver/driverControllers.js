@@ -106,10 +106,31 @@ export const declineRide = async (req, res) => {
 export const acceptBooking = async (req, res) => {
   try {
     const { id } = req.body;
-    const { driverId } = req.user;
-    const prevBookings = await tripModel.findOne({ _id: id });
+    const driverId = req.user.id;
+    const prevBookings = await tripModel.findOne({ _id: id }).select("date");
 
-    console.log(prevBookings);
+    const prev = await tripModel.aggregate([{ $match: { driver: mongoose.Types.ObjectId(driverId), date: prevBookings.date } }]);
+    if (prev.length != 0) return res.status(302).json({ msg: "Already booking aviable  in this date" });
+
+    const code = generateVerficationCode();
+    await tripModel.updateOne({ _id: id }, { $set: { driver: driverId, bookingStatus: "Conform", verficationCode: code } });
+
+    return res.status(200).json({ msg: "New booking accepted" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+export const getBookingHistory = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const bookingList = await tripModel.aggregate([
+      { $match: { driver: mongoose.Types.ObjectId(id), bookingStatus: "Conform" } },
+      { $lookup: { from: "users", localField: "user", foreignField: "_id", as: "user" } },
+      { $unwind: "$user" },
+      { $project: { "user.password": 0, "user.createdAt": 0, "user.updatedAt": 0 } },
+    ]);
+    res.status(200).json({ Bookings: bookingList });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error!" });
   }

@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarContext } from "../../Context/NavbarContext";
-import { fetchLoactionData, setLogout } from "../../Store/Slice/DriverLogin";
-import BookOnlineIcon from "@mui/icons-material/BookOnline";
+import { setLogout } from "../../Store/Slice/DriverLogin";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Person3Icon from "@mui/icons-material/Person3";
 import DriverLocationMobile from "./DriverLocationMobile";
 import HailIcon from "@mui/icons-material/Hail";
+import LocalTaxiIcon from "@mui/icons-material/LocalTaxi";
 
 const MainNavbar = () => {
   const { isMobile } = useContext(NavbarContext);
@@ -66,8 +66,8 @@ const MainNavbar = () => {
               <Link
                 to="/driver/accept-ride"
                 className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                <BookOnlineIcon className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="flex-1 ml-3 whitespace-nowrap">Bookings</span>
+                <LocalTaxiIcon className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                <span className="flex-1 ml-3 whitespace-nowrap">Pending </span>
               </Link>
             </li>
             <li>
@@ -75,7 +75,7 @@ const MainNavbar = () => {
                 to="/driver/pending-bookings"
                 className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <HailIcon className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="flex-1 ml-3 whitespace-nowrap">Pending Bookings</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Available</span>
               </Link>
             </li>
             <li>

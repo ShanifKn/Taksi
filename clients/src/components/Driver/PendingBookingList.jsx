@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { acceptPendingBookings } from "../../api/services/DriverRequest";
+import WarningIcon from "@mui/icons-material/Warning";
 import { useSelector } from "react-redux";
 
 const PendingBookingList = (trip) => {
   const token = useSelector((state) => state.driverLogin.token);
   const [error, setError] = useState("");
-
-  console.log(trip.data);
+  const [warning, setWarning] = useState("");
 
   const handleBooking = async (id) => {
     const response = await acceptPendingBookings(id, token);
-    console.log(response);
+    if (response.status === 302) return setWarning("Already have available booking on this date!");
+    if (response.status === 200) return trip.accept();
+    if (response.status === 500) return setError("Try Again after some times");
   };
 
   return (
@@ -44,6 +46,15 @@ const PendingBookingList = (trip) => {
       <input type="checkbox" id={`my-modal1-${trip.data._id}`} className="modal-toggle" />
       <div className="modal ">
         <div className="modal-box bg-gray-100 text-black">
+          {warning && (
+            <div className="alert alert-warning shadow-lg mb-4">
+              <div>
+                <WarningIcon className="stroke-current flex-shrink-0 h-6 w-6" />
+                <span>{warning}</span>
+              </div>
+            </div>
+          )}
+
           {error && (
             <div className="alert alert-error shadow-lg mb-2">
               <div>
@@ -85,9 +96,15 @@ const PendingBookingList = (trip) => {
             </div>
           </div>
           <div className="modal-action flex">
-            <button className="btn bg-transparent text-black btn-success" onClick={() => handleBooking(trip.data._id)}>
-              Accept
-            </button>
+            {warning ? (
+              <button className="btn bg-green-200 text-black btn-success" onClick={() => handleBooking(trip.data._id)}>
+                Accept This
+              </button>
+            ) : (
+              <button className="btn bg-transparent text-black btn-success" onClick={() => handleBooking(trip.data._id)}>
+                Accept
+              </button>
+            )}
             <label htmlFor={`my-modal1-${trip.data._id}`} className="btn">
               Close
             </label>

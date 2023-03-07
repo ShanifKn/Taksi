@@ -32,6 +32,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route path="/" element={<Home />} />
         <Route path="/login" element={isUser ? <Navigate to="/" /> : <Login />} />
         <Route path="/signup" element={isUser ? <Navigate to="/" /> : <UserSigup />} />
@@ -41,6 +42,8 @@ function App() {
         <Route path="/ride" element={!isUser ? <Navigate to="/" /> : <RidePage />} />
         <Route path="/wallet" element={!isUser ? <Navigate to="/" /> : <WalletPage />} />:
         <Route path="/error" element={<ErrorServer />} />
+
+
         {/* Driver Side */}
         <Route path="/driver/login" element={isDriver ? <Navigate to="/driver/" /> : <LoginPage />} />
         <Route path="/driver/signup" element={isDriver ? <Navigate to="/driver/" /> : <Signup />} />
@@ -50,7 +53,13 @@ function App() {
         <Route path="/driver/pending-bookings" element={isDriver ? <PendingBookingPage /> : <Navigate to="/driver/login" />} />
         <Route path="/driver/approve" element={<Approve />} />
         <Route path="/driver/error" element={<ErrorPage />} />
+     
+     
+     
         {/* Admin Side  */}
+
+
+
         <Route path="/admin/" element={isAdmin ? <Navigate to="/admin/home" /> : <LoginAdmin />} />
         <Route path="/admin/home" element={isAdmin ? <AdminHome /> : <Navigate to="/admin/" />} />
         <Route path="/admin/driver" element={isAdmin ? <DriverPage /> : <Navigate to="/admin/" />} />
