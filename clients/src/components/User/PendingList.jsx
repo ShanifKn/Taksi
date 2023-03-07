@@ -71,10 +71,10 @@ const PendingList = ({ trips }) => {
                       <h1 className="text-lg font-semibold">
                         Booking Status : <span className="text-red-500 font-bold">{trip.bookingStatus}</span>
                       </h1>
-                      <div className="flex justify-between mt-10">
-                        <button className="btn btn-success text-lg text-black ">
+                      <div className="flex justify-end items-end mt-10">
+                        {/* <button className="btn btn-success text-lg text-black ">
                           Pay <spam className="text-black font-bold ml-1">₹{trip.payment.amount} </spam>
-                        </button>
+                        </button> */}
                         <button className="btn btn-error text-base text-black ">cancel Booking</button>
                       </div>
                     </div>

@@ -29,6 +29,7 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
+    "stripe": "^11.13.0",
     "twilio": "^3.84.1"
   }
 }
