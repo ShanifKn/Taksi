@@ -5,22 +5,22 @@ const PendingList = ({ trips }) => {
   return (
     <>
       {trips.length !== 0 && (
-        <section class="text-gray-600 bg-white body-font">
-          <div class="container px-5 py-10 mx-auto">
-            <div class="flex flex-col w-full mb-20">
-              <h1 class="sm:text-3xl text-2xl font-bold  mb-4 text-red-900">Pending Bookings</h1>
+        <section className="text-gray-600 bg-white body-font">
+          <div className="container px-5 py-10 mx-auto">
+            <div className="flex flex-col w-full mb-20">
+              <h1 className="sm:text-3xl text-2xl font-bold  mb-4 text-red-900">Pending Bookings</h1>
             </div>
-            <div class="flex flex-wrap -m-2">
+            <div className="flex flex-wrap -m-2">
               {trips.map((trip, _id) => (
                 <>
-                  <div class="p-2 lg:w-1/3 md:w-1/2 w-full" key={_id}>
-                    <div class="h-full flex items-center border-gray-400 border p-4 rounded-lg text-black">
+                  <div className="p-2 lg:w-1/3 md:w-1/2 w-full" key={_id}>
+                    <div className="h-full flex items-center border-gray-400 border p-4 rounded-lg text-black">
                       <img
                         alt="team"
-                        class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                        className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
                         src="https://dummyimage.com/80x80"
                       />
-                      <div class="flex-grow">
+                      <div className="flex-grow">
                         <div className="flex gap-2 mb-2 items-center">
                           <h1 className="text-lg  font-bold">{trip.location.pickup.split(",")[0]}</h1>
                           <ArrowRightAltIcon />

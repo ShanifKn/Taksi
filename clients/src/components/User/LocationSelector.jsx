@@ -76,7 +76,7 @@ const LocationSelector = () => {
           <input
             className="my-2 rounded-2 p-22 outline-none border-none bg-transparent h-full w-full"
             placeholder="Enter pickup loaction"
-            value={pickUp}
+            value={pickUp} 
             onChange={handleSetPickUP}
             onFocus={() => setInFocus("from")}
             onInput={handleInput}

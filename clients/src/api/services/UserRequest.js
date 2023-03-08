@@ -78,3 +78,16 @@ export const getTrips = async (token) => {
     return error.response;
   }
 };
+
+export const payementAction = async (id, token) => {
+  try {
+    const response = await axiosInstance.patch(
+      "/user/payment-action",
+      { id },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response;
+  } catch (error) {}
+};

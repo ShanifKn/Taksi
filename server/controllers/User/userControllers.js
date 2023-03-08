@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import tripModel from "../../models/booking.js";
 import DriverModel from "../../models/Driver.js";
+import { paymentStripe } from "./PaymentControllers.js";
 import { Trip } from "./tripControllers.js";
 
 export const carList = async (req, res) => {
@@ -49,7 +50,21 @@ export const getTrips = async (req, res) => {
     ]);
     res.status(200).json({ trip: trips });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Internal server error !" });
   }
+};
+
+export const paymentAction = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const response = await paymentStripe();
+    res.status(200).json({ response });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal server error !" });
+  }
+};
+
+export const paymentSucess = async (req, res) => {
+  console.log(req.headers);
 };

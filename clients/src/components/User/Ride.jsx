@@ -9,6 +9,7 @@ import ConfirmList from "./ConfirmList";
 
 const Ride = () => {
   const token = useSelector((state) => state.userLogin.token);
+
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
   const [confirmTrip, setConfirmTrips] = useState([]);
