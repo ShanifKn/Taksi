@@ -91,3 +91,17 @@ export const payementAction = async (id, token) => {
     return response;
   } catch (error) {}
 };
+
+//* cancel booking *//
+export const cancelTrip = async (id, token) => {
+  try {
+    const response = await axiosInstance.patch(
+      "/user/cancel-booking",
+      { id },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response;
+  } catch (error) {}
+};

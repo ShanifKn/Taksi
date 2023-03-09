@@ -4,6 +4,9 @@ import DriverModel from "../../models/Driver.js";
 import { paymentStripe } from "./PaymentControllers.js";
 import { Trip } from "./tripControllers.js";
 
+// const options = { day: "2-digit", month: "short", year: "numeric" };
+const currentDate = new Date();
+
 export const carList = async (req, res) => {
   try {
     const driver = await DriverModel.aggregate([{ $match: { Approval: true, "current_location.status": true } }]);
@@ -57,7 +60,7 @@ export const getTrips = async (req, res) => {
 export const paymentAction = async (req, res) => {
   try {
     const { id } = req.body;
-    const response = await paymentStripe();
+    const response = await paymentStripe(id);
     res.status(200).json({ response });
   } catch (error) {
     console.log(error.message);
@@ -66,5 +69,31 @@ export const paymentAction = async (req, res) => {
 };
 
 export const paymentSucess = async (req, res) => {
-  console.log(req.headers);
+  const { id } = req.params;
+  await tripModel.updateOne({ _id: id }, { $set: { "payment.status": true } });
+  res.redirect(process.env.REDIRECT_URL);
+};
+
+export const cancelBooking = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const trip = await tripModel.findById(id);
+    const timestamp = Date.parse(trip.date);
+    const givenDate = new Date(timestamp);
+
+    const diffMs = givenDate - currentDate;
+
+    const lessThanTwoDays = diffMs < 48 * 60 * 60 * 1000;
+
+    if (lessThanTwoDays) {
+       
+    }
+
+
+
+
+
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
 };

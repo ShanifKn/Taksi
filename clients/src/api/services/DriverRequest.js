@@ -66,7 +66,7 @@ export const declineRide = async (id, token) => {
 
 export const getlocation = async (token) => {
   try {
-    const response = await AxiosInstance("/driver/current-location", {
+    const response = await AxiosInstance.get("/driver/current-location", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -79,7 +79,6 @@ export const getlocation = async (token) => {
 
 export const set_location = async (location, status, token) => {
   try {
-    console.log(location);
     const response = await AxiosInstance.patch(
       "/driver/set-location",
       { location, status },

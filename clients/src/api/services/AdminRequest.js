@@ -41,7 +41,6 @@ export const driverDetails = async (id, token) => {
 };
 
 // * Driver Approval *//
-
 export const approve = async (id, token) => {
   try {
     const response = await AxiosInstance.post(
@@ -59,13 +58,11 @@ export const approve = async (id, token) => {
 };
 
 // *  Driver List *//
-
 export const driverList = async (token) => {
   try {
     const response = await AxiosInstance.get("/admin/driver/list", {
       headers: { Authorization: `Bearer  ${token}` },
     });
-
     const data = response.data.Driver;
     return data;
   } catch (error) {

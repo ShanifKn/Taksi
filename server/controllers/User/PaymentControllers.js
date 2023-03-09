@@ -2,9 +2,10 @@ import stripePackage from "stripe";
 
 const stripe = stripePackage(process.env.STRIPE_KEY);
 
-const YOUR_DOMAIN = "http://localhost:3001/user/webhook";
+const paymentSucess = process.env.PAYMENT_SUCCESS;
+const paymentCancel = process.env.PAYMENT_CANCEL;
 
-export const paymentStripe = async () => {
+export const paymentStripe = async (id) => {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: [
@@ -20,9 +21,8 @@ export const paymentStripe = async () => {
       },
     ],
     mode: "payment",
-    success_url: `${YOUR_DOMAIN}?success=true`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    success_url: `${paymentSucess}/${id}`,
+    cancel_url: `${paymentCancel}`,
   });
-  console.log(session);
   return session.id;
 };

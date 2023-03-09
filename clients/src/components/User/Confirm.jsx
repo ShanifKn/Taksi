@@ -10,13 +10,13 @@ import StarHalfIcon from "@mui/icons-material/StarHalf";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { useNavigate } from "react-router-dom";
 import { BookedTrip } from "../../api/services/UserRequest";
-import { LocationContext } from "../../Context/locationContext";
+// import { LocationContext } from "../../Context/locationContext";
 
 const Confirm = () => {
   const token = useSelector((state) => state.userLogin.token);
   const navigate = useNavigate();
   const { tripDetails, setTripDate, tripDate, tripTime, setTripTime } = useContext(selectTripContext);
-  const { setPickup, setDropoff } = useContext(LocationContext);
+  // const { setPickup, setDropoff } = useContext(LocationContext);
   const [show, setShow] = useState(false);
   const [driver, setDriver] = useState();
   const [error, setError] = useState("");

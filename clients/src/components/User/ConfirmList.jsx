@@ -1,25 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { payementAction } from "../../api/services/UserRequest";
+import { cancelTrip, payementAction } from "../../api/services/UserRequest";
 import { useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const ConfirmList = ({ trips }) => {
   const token = useSelector((state) => state.userLogin.token);
-  // const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
-  const stripePromise = loadStripe("pk_test_51K1wDdSGyflrBEBDm7mC82lIKLmAI6IHM95ZgIrkXJJ2oLYlfqQsgUwTPhrcjIs5Iq1gRBisSqtIJBLJZoKUUZ0f00RVlY2Yrn");
+  const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
+  const [error, setError] = useState("");
 
   const handlePayment = async (id) => {
     const stripe = await stripePromise;
     const response = await payementAction(id, token);
+    const result = await stripe.redirectToCheckout({ sessionId: response.data.response });
+    if (result.error) return setError("Server error");
+  };
 
-    const result = await stripe.redirectToCheckout({
-      sessionId: response.data.response,
-    });
+  const cancelBooking = async (id) => {
+    const response = await cancelTrip(id, token);
+    if (response.status === 200) return setError("Booking canceled");
+    if (response.status === 300) return setError("Booking canceled charges as applied for late cancellation");
+    if (response.status === 500) return setError("Internal server error!");
 
-    if (result.error) {
-      console.error(result.error);
-    }
+    setTimeout(() => {
+      setError();
+    }, 2000);
   };
 
   return (
@@ -27,6 +33,16 @@ const ConfirmList = ({ trips }) => {
       {trips.length !== 0 && (
         <>
           <div className="flex flex-col w-full mb-10">
+            {error && (
+              <div className="flex justify-center">
+                <div className="alert alert-error shadow-lg w-96 mb-2">
+                  <div>
+                    <ErrorOutlineIcon className="stroke-current flex-shrink-0 h-6 w-6" />
+                    <span>{error}</span>
+                  </div>
+                </div>
+              </div>
+            )}
             <h1 className="sm:text-3xl text-2xl font-bold capitalize mb-4 text-green-900">Confirmed booking</h1>
           </div>
           <div className="flex flex-wrap -m-4 justify-center mb-10">
@@ -105,11 +121,40 @@ const ConfirmList = ({ trips }) => {
                     <h1 className="text-lg font-semibold">
                       Verfication Code : <span className="text-red-500 font-bold">{trip.verficationCode}</span>
                     </h1>
+                    {trip.payment.status && (
+                      <h1 className="text-lg font-semibold">
+                        Payment Status : <span className="text-green-500 font-bold ml-1">Paid</span>
+                      </h1>
+                    )}
                     <div className="flex justify-between mt-10">
-                      <button className="btn btn-success text-lg text-black  " onClick={() => handlePayment(trip._id)}>
-                        Pay <spam className="text-black font-bold ml-1">₹{trip.payment.amount} </spam>
+                      {!trip.payment.status && (
+                        <button className="btn btn-success text-lg text-black  " onClick={() => handlePayment(trip._id)}>
+                          Pay <spam className="text-black font-bold ml-1">₹{trip.payment.amount} </spam>
+                        </button>
+                      )}
+                      <label htmlFor={`my-modal-6-${_id}`} className="btn btn-error text-base text-black ">
+                        Cancel Booking
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <input type="checkbox" id={`my-modal-6-${_id}`} className="modal-toggle" />
+                <div className="modal modal-bottom sm:modal-middle ">
+                  <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div className="p-6 text-center">
+                      <ErrorOutlineIcon className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" />
+                      <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to cancel the booking?</h3>
+                      <button
+                        type="button"
+                        onClick={() => cancelBooking(trip._id)}
+                        className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                        Yes, I'm sure
                       </button>
-                      <button className="btn btn-error text-base text-black ">cancel Booking</button>
+                      <label
+                        htmlFor={`my-modal-6-${_id}`}
+                        className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                        No, cancel
+                      </label>
                     </div>
                   </div>
                 </div>
