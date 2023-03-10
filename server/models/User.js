@@ -26,6 +26,10 @@ const UserSchema = new mongoose.Schema(
     verified: {
       default: false,
     },
+    wallet: {
+      transactions: [{ transactionsID: { type: String }, method: { type: String } }],
+      Amount: { type: Number, default: 0 },
+    },
   },
   { timestamps: true }
 );

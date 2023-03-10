@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import tripModel from "../../models/booking.js";
 import DriverModel from "../../models/Driver.js";
+import UserModel from "../../models/User.js";
 import { paymentStripe } from "./PaymentControllers.js";
 import { Trip } from "./tripControllers.js";
 
@@ -78,21 +79,34 @@ export const cancelBooking = async (req, res) => {
   try {
     const { id } = req.body;
     const trip = await tripModel.findById(id);
+    const refundAmount = trip.payment.amount;
+    const userId = trip.user.valueOf();
+
     const timestamp = Date.parse(trip.date);
     const givenDate = new Date(timestamp);
-
     const diffMs = givenDate - currentDate;
-
     const lessThanTwoDays = diffMs < 48 * 60 * 60 * 1000;
 
     if (lessThanTwoDays) {
-       
+      let cost = refundAmount * 0.05;
+      await UserModel.updateOne(
+        { _id: userId },
+        { $inc: { "wallet.Amount": refundAmount - cost } },
+        { $push: { "wallet.transactions": { transactionsID: id, method: "refund" } } }
+      );
+      await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Cancelled", "payment.refund": true } });
+
+      return res.status(200).json({ msg: "Trip cancellated refund credit to wallet after detition" });
+    } else {
+      await UserModel.updateOne(
+        { _id: userId },
+        { $inc: { "wallet.Amount": refundAmount } },
+        { $push: { "wallet.transactions": { transactionsID: id, method: "refund" } } }
+      );
+      await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Cancelled", "payment.refund": true } });
+
+      return res.status(200).json({ msg: "Trip cancellated refund credit to wallet" });
     }
-
-
-
-
-
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error !" });
   }

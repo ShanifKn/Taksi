@@ -1,14 +1,14 @@
 import React from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
-const PendingList = ({ trips }) => {
+const CancelledList = ({ trips }) => {
   return (
     <>
       {trips.length !== 0 && (
         <section className="text-gray-600 bg-white body-font">
           <div className="container px-5 py-10 mx-auto">
             <div className="flex flex-col w-full mb-20">
-              <h1 className="sm:text-3xl text-2xl font-bold  mb-4 text-red-900">Pending Bookings</h1>
+              <h1 className="sm:text-3xl text-2xl font-bold   text-red-600">Cancelled Bookings</h1>
             </div>
             <div className="flex flex-wrap -m-2">
               {trips.map((trip, _id) => (
@@ -55,27 +55,26 @@ const PendingList = ({ trips }) => {
                       <h2 className="text-base text-gray-300 mb-2">
                         Booking Time : <span className="font-bold text-white">{trip.time} am</span>
                       </h2>
-                      {trip.driver.length !== 0 && (
-                        <>
-                          <label className="text-yellow-300">Driver</label>
-                          <div className="flex gap-2">
-                            <h2 className="text-base font-medium"> {trip.driver[0].firstName}</h2>
-                            <h2 className="text-base font-medium"> {trip.driver[0].lastName}</h2>
-                          </div>
-                          <h2 className="text-base text-gray-300 ">
-                            Vehicle: <span className="font-bold text-white">{trip.driver[0].vehicleModel}</span>
-                          </h2>
-                          <h2 className="text-base text-gray-300 mb-4">
-                            Vehicle No: <span className="font-bold text-white">{trip.driver[0].vehicleNo}</span>
-                          </h2>
 
-                          <h1 className="text-lg font-semibold">
-                            Booking Status : <span className="text-red-500 font-bold">{trip.bookingStatus}</span>
-                          </h1>
-                        </>
-                      )}
+                      <label className="text-yellow-300">Driver</label>
+                      <div className="flex gap-2">
+                        <h2 className="text-base font-medium"> {trip.driver[0].firstName}</h2>
+                        <h2 className="text-base font-medium"> {trip.driver[0].lastName}</h2>
+                      </div>
+                      <h2 className="text-base text-gray-300 ">
+                        Vehicle: <span className="font-bold text-white">{trip.driver[0].vehicleModel}</span>
+                      </h2>
+                      <h2 className="text-base text-gray-300 mb-4">
+                        Vehicle No: <span className="font-bold text-white">{trip.driver[0].vehicleNo}</span>
+                      </h2>
 
+                      <h1 className="text-lg font-semibold">
+                        Booking Status : <span className="text-red-500 font-bold">{trip.bookingStatus}</span>
+                      </h1>
                       <div className="flex justify-end items-end mt-10">
+                        {/* <button className="btn btn-success text-lg text-black ">
+                        Pay <spam className="text-black font-bold ml-1">₹{trip.payment.amount} </spam>
+                      </button> */}
                         <button className="btn btn-error text-base text-black ">cancel Booking</button>
                       </div>
                     </div>
@@ -90,4 +89,4 @@ const PendingList = ({ trips }) => {
   );
 };
 
-export default PendingList;
+export default CancelledList;

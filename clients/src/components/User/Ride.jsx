@@ -6,6 +6,7 @@ import { getTrips } from "../../api/services/UserRequest";
 import PendingList from "./PendingList";
 import FinishList from "./FinishList";
 import ConfirmList from "./ConfirmList";
+import CancelledList from "./CancelledList";
 
 const Ride = () => {
   const token = useSelector((state) => state.userLogin.token);
@@ -15,6 +16,7 @@ const Ride = () => {
   const [confirmTrip, setConfirmTrips] = useState([]);
   const [pendingTrip, setPendingTrips] = useState([]);
   const [finishedTrip, setFinishedTrips] = useState([]);
+  const [cancelledTrip, setcancelledTrip] = useState([]);
 
   const fetchTrips = async () => {
     const response = await getTrips(token);
@@ -23,10 +25,13 @@ const Ride = () => {
       setTrips(data.trip);
       const bookingComfrim = data.trip.filter((trip) => trip.bookingStatus === "Conform");
       const bookingPending = data.trip.filter((trip) => trip.bookingStatus === "Pending");
+      const bookPending = data.trip.filter((trip) => trip.bookingStatus === "Driver_Canceled");
       const bookingCompleted = data.trip.filter((trip) => trip.bookingStatus === "finished");
+      const bookingCancelled = data.trip.filter((trip) => trip.bookingStatus === "Cancelled");
       setConfirmTrips(bookingComfrim);
-      setPendingTrips(bookingPending);
+      setPendingTrips([...bookingPending, ...bookPending]);
       setFinishedTrips(bookingCompleted);
+      setcancelledTrip(bookingCancelled);
     }
     if (response.status === 500) return navigate("/error");
   };
@@ -44,9 +49,10 @@ const Ride = () => {
               <div class="flex flex-col text-center w-full mb-20">
                 <h1 class="text-4xl font-medium  mb-4 text-gray-900 ">Bookings</h1>
               </div>
-              <ConfirmList trips={confirmTrip} />
+              <ConfirmList trips={confirmTrip} fetch={fetchTrips} />
               <PendingList trips={pendingTrip} />
               <FinishList trip={finishedTrip} />
+              <CancelledList trips={cancelledTrip} />
             </div>
           </section>
         </>
