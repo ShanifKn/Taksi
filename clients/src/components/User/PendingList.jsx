@@ -15,11 +15,20 @@ const PendingList = ({ trips }) => {
                 <>
                   <div className="p-2 lg:w-1/3 md:w-1/2 w-full" key={_id}>
                     <div className="h-full flex items-center border-gray-400 border p-4 rounded-lg text-black">
-                      <img
-                        alt="team"
-                        className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                        src="https://dummyimage.com/80x80"
-                      />
+                      {trip.driver.length !== 0 ? (
+                        <img
+                          alt="team"
+                          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                          src={trip.driver[0].PicturePath}
+                        />
+                      ) : (
+                        <img
+                          alt="team"
+                          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                          src="https://dummyimage.com/80x80"
+                        />
+                      )}
+
                       <div className="flex-grow">
                         <div className="flex gap-2 mb-2 items-center">
                           <h1 className="text-lg  font-bold">{trip.location.pickup.split(",")[0]}</h1>

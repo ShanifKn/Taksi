@@ -89,7 +89,9 @@ export const payementAction = async (id, token) => {
       }
     );
     return response;
-  } catch (error) {}
+  } catch (error) {
+    return error.response;
+  }
 };
 
 //* cancel booking *//
@@ -103,5 +105,19 @@ export const cancelTrip = async (id, token) => {
       }
     );
     return response;
-  } catch (error) {}
+  } catch (error) {
+    return error.response;
+  }
+};
+
+// * fetch user details *//
+export const fetchUserDetails = async (token) => {
+  try {
+    const response = await axiosInstance.get("/user/user-info", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
 };

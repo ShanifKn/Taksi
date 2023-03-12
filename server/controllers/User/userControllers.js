@@ -111,3 +111,21 @@ export const cancelBooking = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error !" });
   }
 };
+
+export const userDetails = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const user = await UserModel.findById(id).select({ password: 0, wallet: 0, createdAt: 0, updatedAt: 0 });
+    const pending = await tripModel.aggregate([
+      { $match: { user: mongoose.Types.ObjectId(id), bookingStatus: "Driver_Canceled" } },
+      { $count: "count" },
+    ]);
+    console.log(pending);
+
+    console.log(booking);
+    return res.status(200).json({ user: user });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
+};

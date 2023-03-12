@@ -1,5 +1,5 @@
 import express from "express";
-import { bookTrip, cancelBooking, carList, driverDetails, getTrips, paymentAction, paymentSucess } from "../../controllers/User/userControllers.js";
+import { bookTrip, cancelBooking, carList, driverDetails, getTrips, paymentAction, paymentSucess, userDetails } from "../../controllers/User/userControllers.js";
 import { verifyToken } from "../../middleware/authVerify.js";
 
 const router = express.Router();
@@ -14,6 +14,9 @@ router.get("/driver-details", driverDetails);
 router.get("/get-trips", verifyToken, getTrips);
 
 router.get("/payment-success/:id", paymentSucess);
+
+//* fetch user information *//
+router.get("/user-info", verifyToken, userDetails);
 
 // *--------post request -------*//
 

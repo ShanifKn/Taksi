@@ -82,7 +82,7 @@ const Confirm = () => {
         <>
           <input type="checkbox" id="my-modal-3" className="modal-toggle  " />
           <div className="modal ">
-            <div className="modal-box relative h-5/6 bg-black text-white mt-14 md:overflow-hidden scrollbar-hide ">
+            <div className="modal-box relative h-5/6  bg-black text-white mt-14 md:overflow-hidden scrollbar-hide ">
               <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">
                 ✕
               </label>

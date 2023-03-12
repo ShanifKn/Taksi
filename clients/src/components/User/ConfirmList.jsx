@@ -65,7 +65,7 @@ const ConfirmList = ({ trips, fetch }) => {
                   <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                     <img
                       className="flex-shrink-0 rounded-lg w-36 h-36 object-cover object-center sm:mb-0 mb-4"
-                      src="https://dummyimage.com/200x200"
+                      src={trip.driver[0].PicturePath}
                       alt={trip.driver[0].firstName}
                     />
                     <div className="flex-grow sm:pl-8 ">

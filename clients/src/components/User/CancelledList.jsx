@@ -18,7 +18,7 @@ const CancelledList = ({ trips }) => {
                       <img
                         alt="team"
                         className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                        src="https://dummyimage.com/80x80"
+                        src={trip.driver[0].PicturePath}
                       />
                       <div className="flex-grow">
                         <div className="flex gap-2 mb-2 items-center">
@@ -75,7 +75,7 @@ const CancelledList = ({ trips }) => {
                         {/* <button className="btn btn-success text-lg text-black ">
                         Pay <spam className="text-black font-bold ml-1">₹{trip.payment.amount} </spam>
                       </button> */}
-                        <button className="btn btn-error text-base text-black ">cancel Booking</button>
+                        {/* <button className="btn btn-error text-base text-black ">cancel Booking</button> */}
                       </div>
                     </div>
                   </div>

@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import { useSelector } from "react-redux";
+import { fetchUserDetails } from "../../api/services/UserRequest";
 
 const Profile = () => {
+  const token = useSelector((state) => state.userLogin.token);
+
+  useEffect(() => {
+    fetchDetails();
+  }, []);
+
+  const fetchDetails = async () => {
+    const response = await fetchUserDetails(token);
+    console.log(response);
+  };
+
+  const uploadImage = (event) => {
+    console.log(event.target.files[0]);
+  };
+
   return (
     <>
       <div class=" font-sans mt-36 w-8/12 flex justify-start items-start text-black">
@@ -14,7 +31,7 @@ const Profile = () => {
               </div>
             </div>
           </label>
-          <input type="file" id="profile-picture" name="profile-picture" className="hidden" />
+          <input type="file" id="profile-picture" name="profile-picture" className="hidden" onChange={uploadImage} />
           <div>
             <div class="text-center mt-2 text-3xl font-medium">Ajo Alex</div>
             <div class="text-center mt-4 font-light text-sm">Shanif@gmail.com</div>

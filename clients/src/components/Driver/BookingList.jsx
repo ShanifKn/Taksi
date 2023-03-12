@@ -49,7 +49,7 @@ const BookingList = ({ trip }) => {
               <h3 class="text-black  font-Bold  text-xl ">
                 verfication Code: <span className="text-red-500 font-medium">{trip.verficationCode}</span>
               </h3>
-              <button className="btn btn-error">Cancel</button>
+              {/* <button className="btn btn-error">Cancel</button> */}
             </div>
           </div>
         </div>
