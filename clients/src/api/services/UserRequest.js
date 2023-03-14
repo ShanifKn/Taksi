@@ -121,3 +121,30 @@ export const fetchUserDetails = async (token) => {
     return error.response;
   }
 };
+
+//* update user profile *//
+export const updateUserProfile = async (image, token) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const response = await axiosInstance.post("/user/user-profile", formData, {
+      headers: { Authorization: "Bearer " + token, "Content-Type": "multipart/form-data" },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+//* add money to wallet *//
+export const addAmount = async (cash, token) => {
+  try {
+    const response = await axiosInstance.post("/user/add-cash", {amount:cash}, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

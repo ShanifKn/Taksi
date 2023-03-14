@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import tripModel from "../../models/booking.js";
 import DriverModel from "../../models/Driver.js";
 import UserModel from "../../models/User.js";
-import { paymentStripe } from "./PaymentControllers.js";
+import { addMoneyStrip, paymentStripe } from "./PaymentControllers.js";
 import { Trip } from "./tripControllers.js";
 
 // const options = { day: "2-digit", month: "short", year: "numeric" };
@@ -61,7 +61,8 @@ export const getTrips = async (req, res) => {
 export const paymentAction = async (req, res) => {
   try {
     const { id } = req.body;
-    const response = await paymentStripe(id);
+    const trip = await tripModel.findOne({ _id: id });
+    const response = await paymentStripe(id, trip);
     res.status(200).json({ response });
   } catch (error) {
     console.log(error.message);
@@ -120,12 +121,61 @@ export const userDetails = async (req, res) => {
       { $match: { user: mongoose.Types.ObjectId(id), bookingStatus: "Driver_Canceled" } },
       { $count: "count" },
     ]);
-    console.log(pending);
+    const results = await tripModel.aggregate([
+      { $match: { user: mongoose.Types.ObjectId(id) } },
+      {
+        $facet: {
+          canceled: [{ $match: { bookingStatus: "Driver_Canceled" } }, { $count: "count" }],
+          confirmed: [{ $match: { bookingStatus: "Conform" } }, { $count: "count" }],
+        },
+      },
+    ]);
 
-    console.log(booking);
-    return res.status(200).json({ user: user });
+    const pendingCount = results[0].canceled[0].count;
+    const confirmedCount = results[0].confirmed[0].count;
+    return res.status(200).json({ user: user, pending: pendingCount, conform: confirmedCount });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export const userProfileUpload = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const imageUrl = req.file.location;
+    await UserModel.updateOne({ _id: id }, { $set: { profile: imageUrl } });
+    await UserModel.findOne({ _id: id }).then((user) => {
+      res.status(200).json({ userProfile: user.profile });
+    });
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export const addCashWallet = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const amount = req.body.amount;
+    const response = await addMoneyStrip(id, amount);
+    res.status(200).json({ response });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export const addAmount = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const amount = req.query.amount;
+    await UserModel.updateOne(
+      { _id: userId },
+      { $inc: { "wallet.Amount": amount } },
+      { $push: { "wallet.transactions": { transactionsID: id, method: "Add Cash" } } }
+    );
+    res.redirect(process.env.PAYEMENT_ADD_REDIRECT);
+  } catch (error) {
     res.status(500).json({ error: "Internal Server Error !" });
   }
 };

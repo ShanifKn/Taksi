@@ -30,6 +30,9 @@ const UserSchema = new mongoose.Schema(
       transactions: [{ transactionsID: { type: String }, method: { type: String } }],
       Amount: { type: Number, default: 0 },
     },
+    profile: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
