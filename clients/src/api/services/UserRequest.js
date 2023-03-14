@@ -140,9 +140,17 @@ export const updateUserProfile = async (image, token) => {
 //* add money to wallet *//
 export const addAmount = async (cash, token) => {
   try {
-    const response = await axiosInstance.post("/user/add-cash", {amount:cash}, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axiosInstance.post("/user/add-cash", { amount: cash }, { headers: { Authorization: `Bearer ${token}` } });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+//* fetch wallet balance *//
+export const getBalance = async (token) => {
+  try {
+    const response = await axiosInstance.get("/user/wallet-balance", { headers: { Authorization: `Bearer ${token}` } });
     return response;
   } catch (error) {
     return error.response;

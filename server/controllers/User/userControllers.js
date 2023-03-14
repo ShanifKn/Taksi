@@ -170,12 +170,33 @@ export const addAmount = async (req, res) => {
     const id = req.query.id;
     const amount = req.query.amount;
     await UserModel.updateOne(
-      { _id: userId },
+      { _id: id },
       { $inc: { "wallet.Amount": amount } },
       { $push: { "wallet.transactions": { transactionsID: id, method: "Add Cash" } } }
     );
     res.redirect(process.env.PAYEMENT_ADD_REDIRECT);
+  } catch (error) {}
+};
+
+export const getWalletBalance = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const balance = await UserModel.findOne({ _id: id }).select({
+      password: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      profile: 0,
+      phone: 0,
+      email: 0,
+      _id: 0,
+      name: 0,
+      __v: 0,
+      "wallet.transactions": 0,
+    });
+
+    return res.status(200).json({ balance: balance.wallet.Amount });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: "Internal Server Error !" });
   }
 };

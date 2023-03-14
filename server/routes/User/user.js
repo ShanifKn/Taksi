@@ -7,6 +7,7 @@ import {
   carList,
   driverDetails,
   getTrips,
+  getWalletBalance,
   paymentAction,
   paymentSucess,
   userDetails,
@@ -19,34 +20,26 @@ const router = express.Router();
 
 // *--------get request -------*//
 
-//* fetch driver list *//
-router.get("/carlist", carList);
-//* get driver details *//
-router.get("/driver-details", driverDetails);
-//* fetch trips history *//
-router.get("/get-trips", verifyToken, getTrips);
+router.get("/carlist", carList); //* fetch driver list *//
+router.get("/driver-details", driverDetails); //* get driver details *//
+router.get("/get-trips", verifyToken, getTrips); //* fetch trips history *//
+router.get("/user-info", verifyToken, userDetails); //* fetch user information *//
+router.get("/wallet-balance", verifyToken, getWalletBalance); //* fetch wallet balance *//
 
 //* Stripe routes sucess routes*//
+
 router.get("/payment-success/:id", paymentSucess);
-
 router.get("/payment-add", addAmount);
-
-//* fetch user information *//
-router.get("/user-info", verifyToken, userDetails);
 
 // *--------post request -------*//
 
-//* book ride *//
-router.post("/trip-book", verifyToken, bookTrip);
-//* payement action *//
-router.patch("/payment-action", verifyToken, paymentAction);
-//* cancel action *//
-router.patch("/cancel-booking", verifyToken, cancelBooking);
+router.post("/trip-book", verifyToken, bookTrip); //* book ride *//
+router.post("/user-profile", upload.single("image"), verifyToken, userProfileUpload); //* update user profile *//
+router.post("/add-cash", verifyToken, addCashWallet); //* data add cash *//
 
-//* update user profile *//
-router.post("/user-profile", upload.single("image"), verifyToken, userProfileUpload);
+// *--------patch request -------*//
 
-//* data add cash *//
-router.post("/add-cash", verifyToken, addCashWallet);
+router.patch("/payment-action", verifyToken, paymentAction); //* payement action *//
+router.patch("/cancel-booking", verifyToken, cancelBooking); //* cancel action *//
 
 export default router;
