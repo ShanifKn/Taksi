@@ -2,6 +2,7 @@ import express from "express";
 import {
   addAmount,
   addCashWallet,
+  autoCancel,
   bookTrip,
   cancelBooking,
   carList,
@@ -10,6 +11,7 @@ import {
   getWalletBalance,
   paymentAction,
   paymentSucess,
+  PendingRide,
   userDetails,
   userProfileUpload,
 } from "../../controllers/User/userControllers.js";
@@ -41,5 +43,10 @@ router.post("/add-cash", verifyToken, addCashWallet); //* data add cash *//
 
 router.patch("/payment-action", verifyToken, paymentAction); //* payement action *//
 router.patch("/cancel-booking", verifyToken, cancelBooking); //* cancel action *//
+router.patch("/cancel-ride", verifyToken, PendingRide); //* cancel pending ride *//
+
+// *--------delete request -------*//
+
+router.delete("/auto-cancel" ,verifyToken,autoCancel)
 
 export default router;

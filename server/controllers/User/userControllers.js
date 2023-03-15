@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import tripModel from "../../models/booking.js";
 import DriverModel from "../../models/Driver.js";
 import UserModel from "../../models/User.js";
-import { addMoneyStrip, paymentStripe } from "./PaymentControllers.js";
-import { Trip } from "./tripControllers.js";
+import { addMoneyStrip, paymentStripe, walletPayment } from "./PaymentControllers.js";
+import { findMatchDate, formatDate, Trip } from "./tripControllers.js";
 
 // const options = { day: "2-digit", month: "short", year: "numeric" };
 const currentDate = new Date();
@@ -60,10 +60,16 @@ export const getTrips = async (req, res) => {
 
 export const paymentAction = async (req, res) => {
   try {
+    const userId = req.user.id;
     const { id } = req.body;
     const trip = await tripModel.findOne({ _id: id });
-    const response = await paymentStripe(id, trip);
-    res.status(200).json({ response });
+
+    if (await walletPayment(userId, trip)) {
+      res.status(202).json({ msg: "Payment is done from wallet" });
+    } else {
+      const response = await paymentStripe(id, trip);
+      res.status(200).json({ response });
+    }
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: "Internal server error !" });
@@ -96,7 +102,6 @@ export const cancelBooking = async (req, res) => {
         { $push: { "wallet.transactions": { transactionsID: id, method: "refund" } } }
       );
       await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Cancelled", "payment.refund": true } });
-
       return res.status(200).json({ msg: "Trip cancellated refund credit to wallet after detition" });
     } else {
       await UserModel.updateOne(
@@ -105,7 +110,6 @@ export const cancelBooking = async (req, res) => {
         { $push: { "wallet.transactions": { transactionsID: id, method: "refund" } } }
       );
       await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Cancelled", "payment.refund": true } });
-
       return res.status(200).json({ msg: "Trip cancellated refund credit to wallet" });
     }
   } catch (error) {
@@ -196,7 +200,32 @@ export const getWalletBalance = async (req, res) => {
 
     return res.status(200).json({ balance: balance.wallet.Amount });
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export const PendingRide = async (req, res) => {
+  try {
+    const { tripId } = req.body;
+    await tripModel.updateOne({ _id: tripId }, { $set: { bookingStatus: "Cancelled" } });
+    return res.status(200).json({ msg: "Booking has been canceled" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export const autoCancel = async (req, res) => {
+  try {
+    const date = formatDate(currentDate);
+    const cancel = await findMatchDate(date);
+
+    if (cancel) {
+      console.log(cancel);
+      return res.status(200).json({ msg: "Pending Booking as cancelled" });
+    } else {
+      return res.status(204).json({ msg: "No Pending Booking on current Date" });
+    }
+  } catch (error) {
     res.status(500).json({ error: "Internal Server Error !" });
   }
 };

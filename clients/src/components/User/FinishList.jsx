@@ -7,7 +7,8 @@ const FinishList = ({ trip }) => {
         <section className="text-gray-600 body-font bg-white">
           <div className="container px-5 py-10 mx-auto">
             <div className="flex flex-col w-full mb-20">
-              <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Trip History</h1>
+              <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 text-center">Trip History</h1>
+              <div className="h-1 w-full bg-black rounded"></div>
             </div>
             <div className="flex flex-wrap -m-2">
               <div className="p-2 lg:w-1/3 md:w-1/2 w-full">

@@ -156,3 +156,25 @@ export const getBalance = async (token) => {
     return error.response;
   }
 };
+
+//* cancel pending bookings *//
+
+export const cancelBooking = async (token, tripId) => {
+  try {
+    const response = await axiosInstance.patch("/user/cancel-ride", { tripId }, { headers: { Authorization: `Bearer ${token}` } });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const autoCancelPending = async (token) => {
+  try {
+    const response = await axiosInstance.delete("/user/auto-cancel", { headers: { Authorization: `Bearer ${token}` } });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+

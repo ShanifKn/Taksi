@@ -1,4 +1,6 @@
 import stripePackage from "stripe";
+import tripModel from "../../models/booking.js";
+import UserModel from "../../models/User.js";
 
 const stripe = stripePackage(process.env.STRIPE_KEY);
 
@@ -55,8 +57,32 @@ export const addMoneyStrip = async (id, amount) => {
       },
     ],
     mode: "payment",
-    success_url: `${paymentAdd}?id=${id}&amount=${amount}`
+    success_url: `${paymentAdd}?id=${id}&amount=${amount}`,
     // cancel_url: `${paymentCancel}`,
   });
   return session.id;
+};
+
+export const walletPayment = async (id, trip) => {
+  try {
+    const balance = await UserModel.findOne({ _id: id });
+    const tripCost = trip.payment.amount;
+    const wallet = balance.wallet.Amount;
+    const tripId = trip._id;
+
+    if (tripCost <= wallet) {
+      await tripModel.updateOne({ _id: tripId }, { $set: { "payment.status": true } });
+      await UserModel.updateOne(
+        { _id: id },
+        { $inc: { "wallet.Amount": -tripCost } },
+        { $push: { "wallet.transactions": { transactionsID: tripId, method: "Paid for trip" } } }
+      );
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error.message);
+    return false;
+  }
 };
