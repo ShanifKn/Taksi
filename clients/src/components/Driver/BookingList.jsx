@@ -2,12 +2,11 @@ import React from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
 const BookingList = ({ trip }) => {
-      
   return (
     <>
       <div class=" lg:w-1/2 mb-6 ">
         <div class="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left ">
-          <img alt="team" class="flex-shrink-0 rounded-lg w-48 h-52 object-cover object-center sm:mb-0 mb-4" src="https://dummyimage.com/200x200" />
+          <img alt="team" class="flex-shrink-0 rounded-lg w-48 h-52 object-cover object-center sm:mb-0 mb-4" src={trip.user.profile} />
           <div class="flex-grow sm:pl-8 ">
             <div className="flex gap-2  items-center text-white">
               <h1 className="text-lg  font-bold">{trip.location.pickup.split(",")[0]}</h1>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocationName } from "../../api/getLocationCoordinates";
-import { getlocation } from "../../api/services/DriverRequest";
+import { getlocation, getTripDetails } from "../../api/services/DriverRequest";
 import { setLocation, setActive, setInactive, setLocationData, fetchLoactionData } from "../../Store/Slice/DriverLogin";
 
 const DriverLoacation = () => {
   const [suggestions, setSuggestions] = useState([]);
   const { location, active, token } = useSelector((state) => state.driverLogin);
+  const [otp, setOtp] = useState();
   const dispatch = useDispatch();
 
   const fetchLoactionData = async () => {
@@ -60,9 +61,18 @@ const DriverLoacation = () => {
     return dispatch(setActive());
   };
 
+  // * send otp and get details *//
+  const submitCode = async () => {
+    const response = await getTripDetails(token, otp);
+    console.log(response);
+  };
+
   return (
     <>
       <div className="md:flex items-center hidden">
+        <label htmlFor="my-modal-6" className="btn btn-sm md:btn-md mx-10 bg-red-600 text-black hover:text-white">
+          Start ride
+        </label>
         <div className="form-control mr-4">
           <div className="input-group">
             <input
@@ -90,6 +100,35 @@ const DriverLoacation = () => {
         <div className="flex items-center md:mr-16">
           <div>
             <input type="checkbox" checked={active} className={`toggle toggle-lg  ${!active ? "" : "bg-green-500"}`} onChange={selectOffline} />
+          </div>
+        </div>
+      </div>
+
+      <input type="checkbox" id="my-modal-6" className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle text-white">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Enter the verification code </h3>
+          <div className="flex justify-center items-center w-full ">
+            <div className="form-control md:mt-10 w-56 ">
+              <input
+                type="text"
+                placeholder="otp"
+                value={otp}
+                maxlength="7"
+                className="input input-bordered "
+                onChange={(e) => setOtp(e.target.value)}
+              />
+
+              <button className="btn btn-outline btn-error w-24 my-2 mx-16" onClick={submitCode}>
+                Start
+              </button>
+            </div>
+          </div>
+
+          <div className="modal-action">
+            <label htmlFor="my-modal-6" className="btn">
+              Yay!
+            </label>
           </div>
         </div>
       </div>

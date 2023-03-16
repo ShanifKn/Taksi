@@ -98,16 +98,17 @@ export const cancelBooking = async (req, res) => {
       let cost = refundAmount * 0.05;
       await UserModel.updateOne(
         { _id: userId },
-        { $inc: { "wallet.Amount": refundAmount - cost } },
-        { $push: { "wallet.transactions": { transactionsID: id, method: "refund" } } }
+        {
+          $inc: { "wallet.Amount": refundAmount - cost },
+          $push: { "wallet.transactions": { transactionsID: id, method: "refund", cash: refundAmount - cost } },
+        }
       );
       await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Cancelled", "payment.refund": true } });
       return res.status(200).json({ msg: "Trip cancellated refund credit to wallet after detition" });
     } else {
       await UserModel.updateOne(
         { _id: userId },
-        { $inc: { "wallet.Amount": refundAmount } },
-        { $push: { "wallet.transactions": { transactionsID: id, method: "refund" } } }
+        { $inc: { "wallet.Amount": refundAmount }, $push: { "wallet.transactions": { transactionsID: id, method: "refund", cash: refundAmount } } }
       );
       await tripModel.updateOne({ _id: id }, { $set: { bookingStatus: "Cancelled", "payment.refund": true } });
       return res.status(200).json({ msg: "Trip cancellated refund credit to wallet" });
@@ -121,10 +122,14 @@ export const userDetails = async (req, res) => {
   try {
     const { id } = req.user;
     const user = await UserModel.findById(id).select({ password: 0, wallet: 0, createdAt: 0, updatedAt: 0 });
+
     const pending = await tripModel.aggregate([
       { $match: { user: mongoose.Types.ObjectId(id), bookingStatus: "Driver_Canceled" } },
       { $count: "count" },
     ]);
+
+    if (pending.length === 0) return res.status(201).json({ user: user });
+
     const results = await tripModel.aggregate([
       { $match: { user: mongoose.Types.ObjectId(id) } },
       {
@@ -173,10 +178,18 @@ export const addAmount = async (req, res) => {
   try {
     const id = req.query.id;
     const amount = req.query.amount;
-    await UserModel.updateOne(
+    const wallet = await UserModel.updateOne(
       { _id: id },
-      { $inc: { "wallet.Amount": amount } },
-      { $push: { "wallet.transactions": { transactionsID: id, method: "Add Cash" } } }
+      {
+        $inc: { "wallet.Amount": amount },
+        $push: {
+          "wallet.transactions": {
+            transactionID: id,
+            method: "credit card",
+            cash: amount,
+          },
+        },
+      }
     );
     res.redirect(process.env.PAYEMENT_ADD_REDIRECT);
   } catch (error) {}
@@ -226,6 +239,30 @@ export const autoCancel = async (req, res) => {
       return res.status(204).json({ msg: "No Pending Booking on current Date" });
     }
   } catch (error) {
+    res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export const getWalletHistory = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const wallet = await UserModel.findOne({ _id: id }).select({
+      password: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      profile: 0,
+      phone: 0,
+      email: 0,
+      _id: 0,
+      name: 0,
+      __v: 0,
+    });
+
+    if (wallet.wallet.transactions === 0) return res.status(201).json({ msg: "no wallet transactions" });
+
+    return res.status(200).json({ wallet: wallet.wallet.transactions });
+  } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: "Internal Server Error !" });
   }
 };

@@ -18,10 +18,20 @@ const Profile = () => {
 
   useEffect(() => {
     fetchDetails();
+    // eslint-disable-next-line
   }, []);
 
   const fetchDetails = async () => {
     const response = await fetchUserDetails(token);
+
+    if (response.status === 201) {
+      setUser({
+        name: response.data.user.name,
+        email: response.data.user.email,
+        phone: response.data.user.phone,
+      });
+    }
+
     if (response.status === 200) {
       setUser({
         image: response.data.user.profile,
@@ -32,6 +42,7 @@ const Profile = () => {
         confirmed: response.data.conform,
       });
     }
+
     if (response.status === 500) return navigate("/error");
   };
 
@@ -41,8 +52,6 @@ const Profile = () => {
     if (response.status === 200) return setUser({ image: response.data.userProfile });
     if (response.status === 500) return navigate("/error");
   };
-
-  console.log(user);
 
   return (
     <>
@@ -69,11 +78,11 @@ const Profile = () => {
             <hr class="mt-8" />
             <div class="flex p-4">
               <div class="w-1/2 text-center">
-                <span class="font-bold">{user.pending}</span> Pending
+                <span class="font-bold">{user.pending ? user.pending : 0}</span> Pending
               </div>
               <div class="w-0 border border-gray-300"></div>
               <div class="w-1/2 text-center">
-                <span class="font-bold">{user.confirmed}</span> Confirm
+                <span class="font-bold">{user.confirmed ? user.confirmed : 0}</span> Confirm
               </div>
             </div>
           </div>

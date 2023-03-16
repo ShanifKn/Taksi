@@ -135,3 +135,20 @@ export const getBookingHistory = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error!" });
   }
 };
+
+export const startTrip = async (req, res) => {
+  try {
+    await tripModel.updateOne({ verficationCode: req.body.otp }, { $set: { bookingStatus: "Started" } });
+
+    const rider = await tripModel.aggregate([
+      { $match: { verficationCode: req.body.otp, bookingStatus: "Started" } },
+      // { $lookup: { from: "users", localField: "user", foreignField: "_id", as: "user" } },
+      // { $unwind: "$user" },
+      // { $project: { "user.password": 0, "user.createdAt": 0, "user.updatedAt": 0 } },
+    ]);
+
+    console.log(rider);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};

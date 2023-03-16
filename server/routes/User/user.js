@@ -9,6 +9,7 @@ import {
   driverDetails,
   getTrips,
   getWalletBalance,
+  getWalletHistory,
   paymentAction,
   paymentSucess,
   PendingRide,
@@ -27,6 +28,7 @@ router.get("/driver-details", driverDetails); //* get driver details *//
 router.get("/get-trips", verifyToken, getTrips); //* fetch trips history *//
 router.get("/user-info", verifyToken, userDetails); //* fetch user information *//
 router.get("/wallet-balance", verifyToken, getWalletBalance); //* fetch wallet balance *//
+router.get("/wallet-details", verifyToken, getWalletHistory);
 
 //* Stripe routes sucess routes*//
 
@@ -47,6 +49,6 @@ router.patch("/cancel-ride", verifyToken, PendingRide); //* cancel pending ride 
 
 // *--------delete request -------*//
 
-router.delete("/auto-cancel" ,verifyToken,autoCancel)
+router.delete("/auto-cancel", verifyToken, autoCancel);
 
 export default router;

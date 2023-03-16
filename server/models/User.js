@@ -27,8 +27,23 @@ const UserSchema = new mongoose.Schema(
       default: false,
     },
     wallet: {
-      transactions: [{ transactionsID: { type: String }, method: { type: String } }],
-      Amount: { type: Number, default: 0 },
+      transactions: [
+        {
+          transactionID: {
+            type: String,
+          },
+          method: {
+            type: String,
+          },
+          cash: {
+            type: Number,
+          },
+        },
+      ],
+      Amount: {
+        type: Number,
+        default: 0,
+      },
     },
     profile: {
       type: String,

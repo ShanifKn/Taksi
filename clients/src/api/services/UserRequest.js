@@ -177,4 +177,11 @@ export const autoCancelPending = async (token) => {
   }
 };
 
-
+export const getWallet = async (token) => {
+  try {
+    const response = await axiosInstance.get("/user/wallet-details", { headers: { Authorization: `Bearer ${token}` } });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
