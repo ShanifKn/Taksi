@@ -62,6 +62,10 @@ const DriverSchema = new mongoose.Schema(
       type: Number,
       default: 10,
     },
+    onRide: {
+      type: Boolean,
+      default: false,
+    },
     current_location: {
       location: { type: Array, default: [] },
       status: { type: Boolean, default: false },

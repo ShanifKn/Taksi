@@ -1,29 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocationName } from "../../api/getLocationCoordinates";
-import { getlocation, getTripDetails } from "../../api/services/DriverRequest";
-import { setLocation, setActive, setInactive, setLocationData, fetchLoactionData } from "../../Store/Slice/DriverLogin";
+import { getlocation, getTripDetails, onRide, stopRiding } from "../../api/services/DriverRequest";
+import RailwayAlertIcon from "@mui/icons-material/RailwayAlert";
+import { setLocation, setActive, setInactive, setLocationData, setStartDrive } from "../../Store/Slice/DriverLogin";
+import { useNavigate } from "react-router-dom";
 
 const DriverLoacation = () => {
   const [suggestions, setSuggestions] = useState([]);
-  const { location, active, token } = useSelector((state) => state.driverLogin);
+  const { location, active, token, driving } = useSelector((state) => state.driverLogin);
   const [otp, setOtp] = useState();
+  const [customer, setCustomer] = useState();
+  const [error, setError] = useState();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fetchLoactionData = async () => {
     const response = await getlocation(token);
-    if (response.status === 306) return;
+    console.log(response.data);
+    if (response.status === 306) return dispatch(setStartDrive({ driving: false }));
+    if (response.status === 302) return dispatch(setStartDrive({ driving: true }));
     if (response.status === 200) {
       const lng = response.data.location[0];
       const lat = response.data.location[1];
       await getLocationName(lng, lat).then((locationName) => {
-        dispatch(setLocation({ location: locationName, active: true }));
+        dispatch(setLocation({ location: locationName, active: true, driving: false }));
       });
     }
   };
 
   useEffect(() => {
     fetchLoactionData();
+    // eslint-disable-next-line
   }, []);
 
   //* location suggestion *//
@@ -64,15 +72,36 @@ const DriverLoacation = () => {
   // * send otp and get details *//
   const submitCode = async () => {
     const response = await getTripDetails(token, otp);
-    console.log(response);
+    if (response.status === 200) return setCustomer(response.data.ride);
+    if (response.status === 203) return setError("No User found");
+    if (response.status === 500) return navigate("/driver/error");
+  };
+
+  const appectRide = async () => {
+    dispatch(setInactive());
+    dispatch(setLocationData());
+    dispatch(setStartDrive({ driving: true }));
+    await onRide(token);
+  };
+
+  const stopRide = async () => {
+    dispatch(setStartDrive({ driving: false }));
+    await stopRiding(token);
   };
 
   return (
     <>
       <div className="md:flex items-center hidden">
-        <label htmlFor="my-modal-6" className="btn btn-sm md:btn-md mx-10 bg-red-600 text-black hover:text-white">
-          Start ride
-        </label>
+        {!driving ? (
+          <label htmlFor="my-modal-6" className="btn btn-sm md:btn-md mx-10 bg-green-600 text-black hover:text-white">
+            Start ride
+          </label>
+        ) : (
+          <button className="btn btn-sm md:btn-md mx-10 bg-red-600 text-black hover:text-white" onClick={stopRide}>
+            Stop
+          </button>
+        )}
+
         <div className="form-control mr-4">
           <div className="input-group">
             <input
@@ -107,27 +136,72 @@ const DriverLoacation = () => {
       <input type="checkbox" id="my-modal-6" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle text-white">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Enter the verification code </h3>
-          <div className="flex justify-center items-center w-full ">
-            <div className="form-control md:mt-10 w-56 ">
-              <input
-                type="text"
-                placeholder="otp"
-                value={otp}
-                maxlength="7"
-                className="input input-bordered "
-                onChange={(e) => setOtp(e.target.value)}
-              />
-
-              <button className="btn btn-outline btn-error w-24 my-2 mx-16" onClick={submitCode}>
-                Start
-              </button>
+          {error && (
+            <div className="alert alert-error shadow-lg my-5">
+              <div>
+                <RailwayAlertIcon className="stroke-current flex-shrink-0 h-6 w-6" />
+                <span>{error}</span>
+              </div>
             </div>
-          </div>
+          )}
+          {!customer && (
+            <>
+              <h3 className="font-bold text-lg">Enter the verification code </h3>
+              <div className="flex justify-center items-center w-full ">
+                <div className="form-control md:mt-10 w-56 ">
+                  <input
+                    type="text"
+                    placeholder="otp"
+                    value={otp}
+                    maxLength="7"
+                    minLength="7"
+                    className="input input-bordered "
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+
+                  <button className="btn btn-outline btn-error w-24 my-2 mx-16" onClick={submitCode}>
+                    Start
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {customer && (
+            <>
+              <h3 className="font-bold text-lg text-center ">Customer details </h3>
+
+              <div className="card w-full bg-base-100 shadow-xl  mt-5">
+                <div className="card-body">
+                  <h2 className="card-title">Name: {customer.user[0].name}</h2>
+                  <p>Contact : {customer.user[0].phone}</p>
+                  <p>Pick-up : {customer.location.pickup}</p>
+                  <p>Drop-up : {customer.location.dropoff}</p>
+                  <p>Payment : {customer.payment.amount}</p>
+                  <p>
+                    Status :
+                    {customer.payment.status ? (
+                      <span className="text-green-500 ml-2 font-bold">Paid</span>
+                    ) : (
+                      <span className="text-red-500 ml-2 font-bold">Unpaid</span>
+                    )}
+                  </p>
+                  <div className="card-actions justify-end">
+                    <label htmlFor="my-modal-6" className="btn bg-red-500 text-black">
+                      Decline
+                    </label>
+                    <label htmlFor="my-modal-6" className="btn btn-primary" onClick={appectRide}>
+                      Accept
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="modal-action">
             <label htmlFor="my-modal-6" className="btn">
-              Yay!
+              Close
             </label>
           </div>
         </div>

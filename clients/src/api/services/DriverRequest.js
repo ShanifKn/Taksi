@@ -1,4 +1,3 @@
-import axiosInstance from "../AxiosInstance";
 import AxiosInstance from "../AxiosInstance";
 
 export const DriverSignup = async (Data) => {
@@ -133,6 +132,25 @@ export const getTripDetails = async (token, otp) => {
     const response = await AxiosInstance.patch("/driver/trip-start", { otp }, { headers: { Authorization: `Bearer ${token}` } });
     return response;
   } catch (error) {
+    return error.response;
+  }
+};
+
+export const stopRiding = async (token) => {
+  try {
+    const response = await AxiosInstance.patch("/driver/trip-end", { status: false }, { headers: { Authorization: `Bearer ${token}` } });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const onRide = async (token) => {
+  try {
+    const response = await AxiosInstance.patch("/driver/trip-on", { status: false }, { headers: { Authorization: `Bearer ${token}` } });
+    return response;
+  } catch (error) {
+    console.log(error.response);
     return error.response;
   }
 };

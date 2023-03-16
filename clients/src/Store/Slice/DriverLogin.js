@@ -8,6 +8,7 @@ const initialState = {
   location: null,
   coordinates: [],
   active: false,
+  driving: false,
 };
 
 export const DriverLoginSlice = createSlice({
@@ -26,14 +27,17 @@ export const DriverLoginSlice = createSlice({
       state.location = null;
       state.coordinates = [];
       state.active = false;
+      state.driving = false;
     },
     setLocation: (state, action) => {
       state.location = action.payload.location;
       state.coordinates = [action.payload.coordinates];
       state.active = action.payload.active;
+      state.driving = action.payload.driving;
     },
     setActive: (state, action) => {
       state.active = true;
+      state.driving = false;
     },
     setInactive: (state, action) => {
       state.location = null;
@@ -43,9 +47,13 @@ export const DriverLoginSlice = createSlice({
     setLocationData: (state, action) => {
       set_location(state.coordinates, state.active, state.token);
     },
+
+    setStartDrive: (state, action) => {
+      state.driving = action.payload.driving;
+    },
   },
 });
 
-export const { setLogin, setLogout, setLocation, setActive, setInactive, setLocationData } = DriverLoginSlice.actions;
+export const { setLogin, setLogout, setLocation, setActive, setInactive, setLocationData, setStartDrive } = DriverLoginSlice.actions;
 
 export default DriverLoginSlice.reducer;

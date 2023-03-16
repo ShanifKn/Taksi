@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { FieldValueInstance } from "twilio/lib/rest/autopilot/v1/assistant/fieldType/fieldValue.js";
 import tripModel from "../../models/booking.js";
 import DriverModel from "../../models/Driver.js";
 
@@ -45,14 +46,17 @@ export const getCurrentLocation = async (req, res) => {
     const { id } = req.user;
     const currentLocation = await DriverModel.aggregate([
       { $match: { _id: mongoose.Types.ObjectId(id) } },
-      { $project: { _id: 0, current_location: 1 } },
+      { $project: { _id: 0, current_location: 1, onRide: 1 } },
     ]);
+
     const location = currentLocation[0].current_location.location[0];
     const status = currentLocation[0].current_location.status;
+    const rideOn = currentLocation[0].onRide;
 
+    if (rideOn === true) return res.status(302).json({ msg: "Driver is on ride" });
     if (!location) return res.status(306).json({ msg: "No current location" });
 
-    res.status(200).json({ location, status });
+    res.status(200).json({ location, status, rideOn });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error!" });
   }
@@ -61,18 +65,16 @@ export const getCurrentLocation = async (req, res) => {
 export const setCurrentLocation = async (req, res) => {
   try {
     const { location, status } = req.body;
-    console.log(location, status);
 
     const { id } = req.user;
-    const setLocation = await DriverModel.updateOne(
+    await DriverModel.updateOne(
       { _id: id },
       {
-        $set: { current_location: { location: location, status: status } },
+        $set: { current_location: { location: location, status: status }, onRide: false },
       }
     );
 
-    console.log(setLocation);
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error!" });
   }
@@ -138,16 +140,49 @@ export const getBookingHistory = async (req, res) => {
 
 export const startTrip = async (req, res) => {
   try {
-    await tripModel.updateOne({ verficationCode: req.body.otp }, { $set: { bookingStatus: "Started" } });
-
-    const rider = await tripModel.aggregate([
-      { $match: { verficationCode: req.body.otp, bookingStatus: "Started" } },
-      // { $lookup: { from: "users", localField: "user", foreignField: "_id", as: "user" } },
-      // { $unwind: "$user" },
-      // { $project: { "user.password": 0, "user.createdAt": 0, "user.updatedAt": 0 } },
+    const start = await tripModel.aggregate([
+      { $match: { verficationCode: parseInt(req.body.otp) } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $set: { bookingStatus: "Started" } },
     ]);
 
-    console.log(rider);
+    if (start.length === 0) return res.status(203).json({ ride: false });
+
+    res.status(200).json({ ride: start[0] });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+export const endTrip = async (req, res) => {
+  try {
+    const { id } = req.user;
+    await tripModel.aggregate([
+      { $match: { driver: mongoose.Types.ObjectId(id), bookingStatus: "Started" } },
+      { $set: { bookingStatus: "Reached" } },
+    ]);
+
+    await DriverModel.updateOne({ _id: id }, { $set: { onRide: false } });
+
+    return res.status(200).json({ msg: "Driver is reached location " });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+export const startedTrip = async (req, res) => {
+  try {
+    const { id } = req.user;
+    await DriverModel.updateOne({ _id: id }, { $set: { onRide: true } });
+    return res.status(200).json({ msg: "Driver is on ride " });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error!" });
   }

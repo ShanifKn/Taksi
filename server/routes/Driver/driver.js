@@ -3,11 +3,13 @@ import {
   acceptBooking,
   acceptRide,
   declineRide,
+  endTrip,
   getBookingHistory,
   getBookings,
   getCurrentLocation,
   getPendingBookingList,
   setCurrentLocation,
+  startedTrip,
   startTrip,
 } from "../../controllers/Driver/driverControllers.js";
 import { verifyToken } from "../../middleware/authVerify.js";
@@ -27,6 +29,8 @@ router.patch("/accept-booking", verifyToken, acceptRide); //* Accept ride bookin
 router.patch("/set-location", verifyToken, setCurrentLocation); //* set location *//
 router.patch("/decline-booking", verifyToken, declineRide); // * decline ride booking *//
 router.patch("/accept-ride", verifyToken, acceptBooking); //*  accept pending booking *//
-router.patch("/trip-start", verifyToken, startTrip);
+router.patch("/trip-start", verifyToken, startTrip); //* verify user verification code *//
+router.patch("/trip-end", verifyToken, endTrip); //* reached in the location *//
+router.patch("/trip-on", verifyToken, startedTrip); //*
 
 export default router;
